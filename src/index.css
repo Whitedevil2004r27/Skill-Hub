@@ -2,72 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-/* SkillHub Design System - Purple Gradient Theme */
+/* SkillHub Design System - Dark Purple Gradient Theme */
 
 @layer base {
   :root {
-    /* Core Backgrounds - Purple Gradient Theme */
-    --background: 270 15% 8%;
-    --foreground: 0 0% 100%;
+    /* Core Backgrounds - Dark Theme Base */
+    --background: 208 7% 7%; /* #121212 */
+    --foreground: 0 0% 100%; /* #FFFFFF */
 
     /* Card & Surface Colors - Glassmorphism */
-    --card: 270 20% 10%;
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 100% / 0.05; /* rgba(255,255,255,0.05) */
+    --card-foreground: 0 0% 100%; /* #FFFFFF */
 
     /* Interactive Elements */
-    --popover: 270 20% 12%;
+    --popover: 0 0% 100% / 0.08;
     --popover-foreground: 0 0% 100%;
 
-    /* Brand Colors - Purple Gradient System */
-    --primary: 270 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --primary-muted: 264 89% 76%;
+    /* Brand Colors - Purple Gradient System (#7F00FF → #E100FF) */
+    --primary: 270 100% 50%; /* #7F00FF base */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    --primary-end: 309 100% 44%; /* #E100FF */
 
-    /* Secondary - Soft Lavender */
-    --secondary: 264 89% 76%;
-    --secondary-foreground: 270 20% 20%;
+    /* Accent Colors - Purple Variants */
+    --accent-purple: 267 100% 76%; /* #BB86FC */
+    --light-violet: 267 91% 85%; /* #D8B4FE */
+    --secondary: 267 100% 76%; /* #BB86FC */
+    --secondary-foreground: 0 0% 100%;
 
-    /* Neutral Tones */
-    --muted: 270 15% 15%;
-    --muted-foreground: 0 0% 88%;
+    /* Text Colors */
+    --text-primary: 0 0% 100%; /* #FFFFFF */
+    --text-secondary: 0 0% 88%; /* #E0E0E0 */
+    --muted: 0 0% 100% / 0.1;
+    --muted-foreground: 0 0% 88%; /* #E0E0E0 */
 
-    /* Accent - Light Purple */
-    --accent: 267 97% 85%;
-    --accent-foreground: 270 20% 20%;
+    /* Accent for Interactive Elements */
+    --accent: 267 91% 85%; /* #D8B4FE */
+    --accent-foreground: 208 7% 7%;
 
     /* Status Colors */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
-
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
     /* UI Elements */
-    --border: 270 20% 20%;
-    --input: 270 20% 15%;
-    --ring: 270 100% 50%;
-
+    --border: 0 0% 100% / 0.1;
+    --input: 0 0% 100% / 0.05;
+    --ring: 267 100% 76%;
     --radius: 0.75rem;
 
-    /* Purple Gradient Backgrounds */
-    --gradient-primary: linear-gradient(to right, hsl(270 100% 50%), hsl(309 100% 50%));
-    --gradient-accent: linear-gradient(135deg, hsl(264 89% 76%), hsl(267 97% 85%));
-    --gradient-hero: linear-gradient(to right, hsl(270 100% 50%), hsl(309 100% 50%));
+    /* Purple Gradient Backgrounds - Exact Spec */
+    --gradient-primary: linear-gradient(to right, #7F00FF, #E100FF);
+    --gradient-hero: linear-gradient(to right, #7F00FF, #E100FF);
+    --gradient-accent: linear-gradient(135deg, #BB86FC, #D8B4FE);
+    --gradient-card: linear-gradient(135deg, rgba(127, 0, 255, 0.1), rgba(225, 0, 255, 0.1));
     
-    /* Glassmorphism Effects */
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --glass-hover: rgba(255, 255, 255, 0.15);
+    /* Enhanced Glassmorphism Effects */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-hover: rgba(255, 255, 255, 0.08);
+    --glass-card: rgba(255, 255, 255, 0.05);
     
-    /* Purple Shadows with Glow */
-    --shadow-sm: 0 1px 2px 0 hsl(270 100% 50% / 0.1);
-    --shadow-md: 0 4px 6px -1px hsl(270 100% 50% / 0.15);
-    --shadow-lg: 0 10px 15px -3px hsl(270 100% 50% / 0.2);
-    --shadow-glow: 0 0 0 1px hsl(270 100% 50% / 0.1), 0 1px 0 0 hsl(270 100% 50% / 0.1), 0 0 30px hsl(270 100% 50% / 0.3);
-    --shadow-purple-glow: 0 0 20px hsl(309 100% 50% / 0.4), 0 0 40px hsl(270 100% 50% / 0.2);
+    /* Purple Neon Glows */
+    --glow-purple: 0 0 20px rgba(127, 0, 255, 0.5);
+    --glow-violet: 0 0 20px rgba(225, 0, 255, 0.3);
+    --shadow-glow: 0 0 30px rgba(127, 0, 255, 0.3);
+    --shadow-purple-glow: 0 0 20px rgba(225, 0, 255, 0.4), 0 0 40px rgba(127, 0, 255, 0.2);
 
     --sidebar-background: 270 20% 10%;
     --sidebar-foreground: 0 0% 100%;
@@ -116,38 +118,48 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply antialiased;
+    background: #121212;
     background: var(--gradient-primary);
     min-height: 100vh;
-    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    font-family: 'Open Sans', 'Roboto', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight;
-    font-family: 'Poppins', sans-serif;
+    @apply font-bold tracking-tight;
+    font-family: 'Poppins', 'Inter', sans-serif;
+    color: var(--text-primary);
   }
 }
 
 @layer components {
-  /* Enhanced Glassmorphism Effects */
+  /* Enhanced Glassmorphism Effects - Exact Spec */
   .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     transition: all 0.3s ease;
   }
 
   .glass:hover {
     background: var(--glass-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-purple-glow);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--glow-purple);
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--glass-card);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius);
+  }
+
+  /* Dark Card Backgrounds */
+  .card-dark {
+    background: var(--glass-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
   }
 
   /* Purple Gradient Backgrounds */
