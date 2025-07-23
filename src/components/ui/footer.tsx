@@ -3,7 +3,7 @@ import { GraduationCap, Github, Twitter, Linkedin, Mail } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="bg-foreground text-white">
+    <footer className="glass-card border-t border-white/10 text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
@@ -12,11 +12,10 @@ export const Footer = () => {
               <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
                 <GraduationCap className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold">MentorMatch</span>
+              <span className="text-xl font-bold">SkillHub</span>
             </Link>
             <p className="text-white/80 mb-6 max-w-sm">
-              Connecting learners with expert mentors through AI-powered matching. 
-              Accelerate your career growth with personalized guidance.
+              Collaborative Learning & Mentorship Platform. Connect, learn, and grow together with AI-powered matching and personalized guidance.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-white/60 hover:text-white transition-colors">
@@ -71,7 +70,7 @@ export const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-white/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-white/60 text-sm mb-4 md:mb-0">
-            © 2024 MentorMatch. All rights reserved.
+            © 2024 SkillHub. All rights reserved.
           </div>
           <div className="flex space-x-6 text-sm">
             <Link to="/privacy" className="text-white/60 hover:text-white transition-colors">

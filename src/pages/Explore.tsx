@@ -83,7 +83,7 @@ export default function Explore() {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <Header />
       
       <main className="pt-16">
@@ -100,7 +100,7 @@ export default function Explore() {
               
               {/* Search Bar */}
               <div className="max-w-2xl mx-auto relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 h-5 w-5" />
                 <Input
                   type="text"
                   placeholder="Search by name, role, or skills..."
@@ -114,13 +114,13 @@ export default function Explore() {
         </section>
 
         {/* Filters & Results */}
-        <section className="py-12">
+        <section className="py-12 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             {/* Filter Bar */}
             <div className="flex flex-wrap items-center gap-4 mb-8">
               <div className="flex items-center gap-2">
-                <Filter className="h-5 w-5 text-muted-foreground" />
-                <span className="font-medium">Filter by skill:</span>
+                <Filter className="h-5 w-5 text-white/80" />
+                <span className="font-medium text-white">Filter by skill:</span>
               </div>
               <Button
                 variant={selectedSkill === "" ? "default" : "outline"}
@@ -143,12 +143,12 @@ export default function Explore() {
 
             {/* Results Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-semibold">
+              <h2 className="text-2xl font-semibold text-white">
                 {filteredMentors.length} mentor{filteredMentors.length !== 1 ? 's' : ''} found
               </h2>
               <div className="flex items-center gap-4">
-                <span className="text-muted-foreground">Sort by:</span>
-                <select className="px-3 py-1 border border-border rounded-md bg-background">
+                <span className="text-white/80">Sort by:</span>
+                <select className="px-3 py-1 border border-white/20 rounded-md bg-white/10 text-white">
                   <option>Rating</option>
                   <option>Price: Low to High</option>
                   <option>Price: High to Low</option>
@@ -160,7 +160,7 @@ export default function Explore() {
             {/* Mentor Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredMentors.map((mentor) => (
-                <Card key={mentor.id} className="hover:shadow-lg transition-shadow duration-300">
+                <Card key={mentor.id} className="glass-card hover:shadow-purple-glow transition-all duration-300 hover-lift">
                   <CardContent className="p-6">
                     {/* Header */}
                     <div className="flex items-start justify-between mb-4">
@@ -170,9 +170,9 @@ export default function Explore() {
                           <AvatarFallback>{mentor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                         </Avatar>
                         <div>
-                          <h3 className="font-semibold text-lg">{mentor.name}</h3>
-                          <p className="text-muted-foreground text-sm">{mentor.title}</p>
-                          <p className="text-primary text-sm font-medium">{mentor.company}</p>
+                          <h3 className="font-semibold text-lg text-white">{mentor.name}</h3>
+                          <p className="text-white/70 text-sm">{mentor.title}</p>
+                          <p className="text-accent text-sm font-medium">{mentor.company}</p>
                         </div>
                       </div>
                       <div className="text-right">
@@ -180,12 +180,12 @@ export default function Explore() {
                           <Star className="h-4 w-4 text-yellow-400 fill-current" />
                           <span className="ml-1 font-medium">{mentor.rating}</span>
                         </div>
-                        <p className="text-xs text-muted-foreground">({mentor.reviews} reviews)</p>
+                        <p className="text-xs text-white/60">({mentor.reviews} reviews)</p>
                       </div>
                     </div>
 
                     {/* Bio */}
-                    <p className="text-muted-foreground text-sm mb-4">{mentor.bio}</p>
+                    <p className="text-white/70 text-sm mb-4">{mentor.bio}</p>
 
                     {/* Skills */}
                     <div className="flex flex-wrap gap-2 mb-4">
@@ -203,11 +203,11 @@ export default function Explore() {
 
                     {/* Details */}
                     <div className="space-y-2 mb-4">
-                      <div className="flex items-center text-sm text-muted-foreground">
+                      <div className="flex items-center text-sm text-white/70">
                         <MapPin className="h-4 w-4 mr-2" />
                         {mentor.location}
                       </div>
-                      <div className="flex items-center text-sm text-muted-foreground">
+                      <div className="flex items-center text-sm text-white/70">
                         <Calendar className="h-4 w-4 mr-2" />
                         {mentor.availability}
                       </div>
@@ -216,10 +216,10 @@ export default function Explore() {
                     {/* Price & CTA */}
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-2xl font-bold">${mentor.hourlyRate}</span>
-                        <span className="text-muted-foreground">/hour</span>
+                        <span className="text-2xl font-bold text-white">${mentor.hourlyRate}</span>
+                        <span className="text-white/70">/hour</span>
                       </div>
-                      <Button className="bg-gradient-primary text-white">
+                      <Button className="bg-gradient-primary text-white hover-glow">
                         Book Session
                       </Button>
                     </div>

@@ -44,14 +44,14 @@ export default function Register() {
             <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
               <GraduationCap className="h-7 w-7 text-primary" />
             </div>
-            <span className="text-2xl font-bold text-white">MentorMatch</span>
+            <span className="text-2xl font-bold text-white">SkillHub</span>
           </Link>
         </div>
 
         {/* Register Card */}
         <Card className="glass border-white/20">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-white">Join MentorMatch</CardTitle>
+            <CardTitle className="text-2xl font-bold text-white">Join SkillHub</CardTitle>
             <CardDescription className="text-white/80">
               Create your account and start your learning journey
             </CardDescription>

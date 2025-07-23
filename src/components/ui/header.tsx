@@ -7,7 +7,7 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-border z-50">
+    <header className="fixed top-0 w-full glass border-b border-white/10 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -15,18 +15,18 @@ export const Header = () => {
             <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
               <GraduationCap className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-foreground">MentorMatch</span>
+            <span className="text-xl font-bold text-white">SkillHub</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/explore" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/explore" className="text-white/80 hover:text-white transition-colors">
               Find Mentors
             </Link>
-            <Link to="/forums" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/forums" className="text-white/80 hover:text-white transition-colors">
               Community
             </Link>
-            <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/about" className="text-white/80 hover:text-white transition-colors">
               About
             </Link>
           </nav>
@@ -34,10 +34,10 @@ export const Header = () => {
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="outline">Sign In</Button>
+              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">Sign In</Button>
             </Link>
             <Link to="/register">
-              <Button className="bg-gradient-primary text-white shadow-glow">Get Started</Button>
+              <Button className="bg-gradient-primary text-white shadow-purple-glow hover-glow">Get Started</Button>
             </Link>
           </div>
 
@@ -46,26 +46,26 @@ export const Header = () => {
             className="md:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
+          <div className="md:hidden py-4 border-t border-white/10">
             <nav className="flex flex-col space-y-4">
-              <Link to="/explore" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/explore" className="text-white/80 hover:text-white transition-colors">
                 Find Mentors
               </Link>
-              <Link to="/forums" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/forums" className="text-white/80 hover:text-white transition-colors">
                 Community
               </Link>
-              <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/about" className="text-white/80 hover:text-white transition-colors">
                 About
               </Link>
               <div className="flex flex-col space-y-2 pt-4">
                 <Link to="/login">
-                  <Button variant="outline" className="w-full">Sign In</Button>
+                  <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">Sign In</Button>
                 </Link>
                 <Link to="/register">
                   <Button className="w-full bg-gradient-primary text-white">Get Started</Button>

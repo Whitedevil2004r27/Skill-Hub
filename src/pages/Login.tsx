@@ -26,7 +26,7 @@ export default function Login() {
             <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
               <GraduationCap className="h-7 w-7 text-primary" />
             </div>
-            <span className="text-2xl font-bold text-white">MentorMatch</span>
+            <span className="text-2xl font-bold text-white">SkillHub</span>
           </Link>
         </div>
 
