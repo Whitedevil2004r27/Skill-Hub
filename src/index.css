@@ -2,280 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-/* SkillHub Design System - Dark Purple Gradient Theme */
-
 @layer base {
   :root {
-    /* SkillHub Dark Theme Only - Purple Gradient System */
-    
-    /* Core Backgrounds - Dark Theme Base */
-    --background: 208 7% 7%; /* #121212 */
-    --foreground: 0 0% 100%; /* #FFFFFF */
-
-    /* Card & Surface Colors - Glassmorphism */
-    --card: 0 0% 100% / 0.05; /* rgba(255,255,255,0.05) */
-    --card-foreground: 0 0% 100%; /* #FFFFFF */
-
-    /* Interactive Elements */
-    --popover: 0 0% 100% / 0.08;
-    --popover-foreground: 0 0% 100%;
-
-    /* Brand Colors - Purple Gradient System (#7F00FF → #E100FF) */
-    --primary: 270 100% 50%; /* #7F00FF base */
-    --primary-foreground: 0 0% 100%; /* #FFFFFF */
-    --primary-end: 309 100% 44%; /* #E100FF */
-
-    /* Accent Colors - Purple Variants */
-    --accent-purple: 267 100% 76%; /* #BB86FC */
-    --light-violet: 267 91% 85%; /* #D8B4FE */
-    --secondary: 267 100% 76%; /* #BB86FC */
-    --secondary-foreground: 0 0% 100%;
-
-    /* Text Colors */
-    --text-primary: 0 0% 100%; /* #FFFFFF */
-    --text-secondary: 0 0% 88%; /* #E0E0E0 */
-    --muted: 0 0% 100% / 0.1;
-    --muted-foreground: 0 0% 88%; /* #E0E0E0 */
-
-    /* Accent for Interactive Elements */
-    --accent: 267 91% 85%; /* #D8B4FE */
-    --accent-foreground: 208 7% 7%;
-
-    /* Status Colors */
+    /* Enhanced Developer-Focused Color Palette */
+    --background: 220 25% 6%;
+    --foreground: 220 15% 95%;
+    --card: 220 20% 8%;
+    --card-foreground: 220 15% 92%;
+    --popover: 220 25% 7%;
+    --popover-foreground: 220 15% 95%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 220 15% 98%;
+    --secondary: 220 15% 12%;
+    --secondary-foreground: 220 15% 85%;
+    --muted: 220 15% 10%;
+    --muted-foreground: 220 10% 60%;
+    --accent: 262 70% 70%;
+    --accent-foreground: 220 15% 98%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
-
-    /* UI Elements */
-    --border: 0 0% 100% / 0.1;
-    --input: 0 0% 100% / 0.05;
-    --ring: 267 100% 76%;
+    --destructive-foreground: 220 15% 98%;
+    --border: 220 15% 15%;
+    --input: 220 15% 12%;
+    --ring: 262 83% 58%;
     --radius: 0.75rem;
 
-    /* Purple Gradient Backgrounds - Exact Spec */
-    --gradient-primary: linear-gradient(to right, #7F00FF, #E100FF);
-    --gradient-hero: linear-gradient(to right, #7F00FF, #E100FF);
-    --gradient-accent: linear-gradient(135deg, #BB86FC, #D8B4FE);
-    --gradient-card: linear-gradient(135deg, rgba(127, 0, 255, 0.1), rgba(225, 0, 255, 0.1));
+    /* Developer-Themed Custom Colors */
+    --code-bg: 220 20% 8%;
+    --code-border: 262 30% 25%;
+    --terminal-green: 142 76% 36%;
+    --warning-orange: 38 92% 50%;
+    --error-red: 0 84% 60%;
+    --success-green: 142 76% 36%;
+    --info-blue: 217 91% 60%;
     
-    /* Enhanced Glassmorphism Effects */
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-hover: rgba(255, 255, 255, 0.08);
-    --glass-card: rgba(255, 255, 255, 0.05);
+    /* Enhanced Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(282 85% 65%) 50%, hsl(302 87% 70%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(220 25% 8%) 0%, hsl(230 20% 12%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(262 70% 70%) 0%, hsl(242 75% 75%) 100%);
+    --gradient-code: linear-gradient(135deg, hsl(220 20% 8%) 0%, hsl(262 20% 12%) 100%);
     
-    /* Purple Neon Glows */
-    --glow-purple: 0 0 20px rgba(127, 0, 255, 0.5);
-    --glow-violet: 0 0 20px rgba(225, 0, 255, 0.3);
-    --shadow-glow: 0 0 30px rgba(127, 0, 255, 0.3);
-    --shadow-purple-glow: 0 0 20px rgba(225, 0, 255, 0.4), 0 0 40px rgba(127, 0, 255, 0.2);
-
-    --sidebar-background: 270 20% 10%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 270 100% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 270 20% 15%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 270 20% 20%;
-    --sidebar-ring: 270 100% 50%;
+    /* Advanced Shadows */
+    --shadow-elegant: 0 4px 20px -2px hsl(262 83% 58% / 0.2);
+    --shadow-glow: 0 0 20px hsl(262 83% 58% / 0.3);
+    --shadow-code: 0 2px 10px hsl(220 25% 4% / 0.5);
+    --shadow-floating: 0 8px 32px hsl(220 25% 4% / 0.4);
+    
+    /* Typography Enhancements */
+    --font-code: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+    --font-heading: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    /* Animation Timing */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply antialiased;
-    background: #121212;
-    background: var(--gradient-primary);
-    min-height: 100vh;
-    color: var(--text-primary);
-    font-family: 'Open Sans', 'Roboto', sans-serif;
+    @apply bg-background text-foreground font-body;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Enhanced Typography */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
-    font-family: 'Poppins', 'Inter', sans-serif;
-    color: var(--text-primary);
+    @apply font-heading;
+    font-weight: 600;
+    line-height: 1.2;
   }
-}
 
-@layer components {
-  /* Enhanced Glassmorphism Effects - Exact Spec */
+  /* Code styling */
+  code, pre {
+    font-family: var(--font-code);
+    @apply bg-code-bg text-terminal-green border border-code-border rounded-md;
+  }
+
+  /* Glass morphism effect */
   .glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .glass:hover {
-    background: var(--glass-hover);
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: var(--glow-purple);
-  }
-
-  .glass-card {
-    background: var(--glass-card);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
-  }
-
-  /* Dark Card Backgrounds */
-  .card-dark {
-    background: var(--glass-card);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-  }
-
-  /* Purple Gradient Backgrounds */
+  /* Enhanced gradient backgrounds */
   .bg-gradient-primary {
     background: var(--gradient-primary);
   }
 
-  .bg-gradient-accent {
-    background: var(--gradient-accent);
+  .bg-gradient-secondary {
+    background: var(--gradient-secondary);
   }
 
-  .bg-gradient-hero {
-    background: var(--gradient-hero);
+  .bg-gradient-code {
+    background: var(--gradient-code);
   }
 
-  /* Enhanced Shadows with Purple Glow */
-  .shadow-glow {
-    box-shadow: var(--shadow-glow);
-  }
-
-  .shadow-purple-glow {
-    box-shadow: var(--shadow-purple-glow);
-  }
-
-  /* Smooth Animations */
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-gradient {
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-  }
-
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
-  }
-
-  .animate-slide-up {
-    animation: slideUp 0.6s ease-out forwards;
-  }
-
-  .animate-scale-in {
-    animation: scaleIn 0.4s ease-out forwards;
-  }
-
-  /* Hover Effects */
-  .hover-lift {
-    transition: all 0.3s ease;
-  }
-
-  .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-purple-glow);
+  /* Developer-themed animations */
+  .hover-glow {
+    transition: var(--transition-smooth);
   }
 
   .hover-glow:hover {
-    box-shadow: 0 0 30px hsl(270 100% 50% / 0.6);
-    transform: scale(1.02);
-  }
-
-  /* Keyframe Animations */
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-
-  @keyframes gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  /* Neon Text Effects */
-  .text-neon {
-    text-shadow: 0 0 10px hsl(270 100% 50% / 0.8), 0 0 20px hsl(270 100% 50% / 0.6);
-  }
-
-  /* Purple Button Variants */
-  .btn-purple {
-    background: linear-gradient(135deg, hsl(264 89% 76%), hsl(267 97% 85%));
-    color: hsl(270 20% 20%);
-    border: none;
-    transition: all 0.3s ease;
-  }
-
-  .btn-purple:hover {
-    background: linear-gradient(135deg, hsl(264 89% 80%), hsl(267 97% 90%));
+    box-shadow: var(--shadow-glow);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-purple-glow);
   }
 
-  /* 3D Perspective Effects */
-  .perspective-1000 {
-    perspective: 1000px;
+  .code-block {
+    @apply bg-gradient-code border border-code-border rounded-lg p-4;
+    box-shadow: var(--shadow-code);
   }
 
-  /* Additional Purple Glows */
-  .shadow-pink-glow {
-    box-shadow: 0 0 20px rgba(225, 0, 255, 0.4), 0 0 40px rgba(225, 0, 255, 0.2);
+  /* Floating elements */
+  .floating {
+    box-shadow: var(--shadow-floating);
+    transition: var(--transition-bounce);
   }
 
-  .shadow-violet-glow {
-    box-shadow: 0 0 20px rgba(216, 180, 254, 0.4), 0 0 40px rgba(216, 180, 254, 0.2);
-  }
-
-  /* Line clamp utility */
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* Enhanced particles animation */
-  .animate-particles {
-    animation: particles 20s linear infinite;
-  }
-
-  @keyframes particles {
-    0%, 100% { 
-      transform: translateY(100vh) rotate(0deg);
-      opacity: 0;
-    }
-    10%, 90% {
-      opacity: 1;
-    }
-    50% {
-      transform: translateY(-10vh) rotate(180deg);
-    }
+  .floating:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px hsl(220 25% 4% / 0.6);
   }
 }
