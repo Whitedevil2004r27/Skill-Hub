@@ -20,14 +20,23 @@ export const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-white/80 hover:text-white transition-colors">
+              Home
+            </Link>
             <Link to="/explore" className="text-white/80 hover:text-white transition-colors">
               Find Mentors
             </Link>
-            <Link to="/forums" className="text-white/80 hover:text-white transition-colors">
+            <Link to="/courses" className="text-white/80 hover:text-white transition-colors">
+              Courses
+            </Link>
+            <Link to="/community" className="text-white/80 hover:text-white transition-colors">
               Community
             </Link>
             <Link to="/about" className="text-white/80 hover:text-white transition-colors">
               About
+            </Link>
+            <Link to="/contact" className="text-white/80 hover:text-white transition-colors">
+              Contact
             </Link>
           </nav>
 
@@ -54,14 +63,23 @@ export const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <nav className="flex flex-col space-y-4">
+              <Link to="/" className="text-white/80 hover:text-white transition-colors">
+                Home
+              </Link>
               <Link to="/explore" className="text-white/80 hover:text-white transition-colors">
                 Find Mentors
               </Link>
-              <Link to="/forums" className="text-white/80 hover:text-white transition-colors">
+              <Link to="/courses" className="text-white/80 hover:text-white transition-colors">
+                Courses
+              </Link>
+              <Link to="/community" className="text-white/80 hover:text-white transition-colors">
                 Community
               </Link>
               <Link to="/about" className="text-white/80 hover:text-white transition-colors">
                 About
+              </Link>
+              <Link to="/contact" className="text-white/80 hover:text-white transition-colors">
+                Contact
               </Link>
               <div className="flex flex-col space-y-2 pt-4">
                 <Link to="/login">
