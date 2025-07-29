@@ -30,32 +30,19 @@ export default {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
-				background: '#121212',
-				foreground: '#FFFFFF',
+				background: 'hsl(var(--background))',
+				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#7F00FF',
-					foreground: '#FFFFFF',
-					end: '#E100FF'
+					DEFAULT: 'hsl(var(--primary))',
+					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: '#BB86FC',
-					foreground: '#FFFFFF'
-				},
-				accent: {
-					purple: '#BB86FC',
-					violet: '#D8B4FE'
+					DEFAULT: 'hsl(var(--secondary))',
+					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
-				},
-				success: {
-					DEFAULT: 'hsl(var(--success))',
-					foreground: 'hsl(var(--success-foreground))'
-				},
-				warning: {
-					DEFAULT: 'hsl(var(--warning))',
-					foreground: 'hsl(var(--warning-foreground))'
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
@@ -73,6 +60,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Developer-themed colors
+				'code-bg': 'hsl(var(--code-bg))',
+				'code-border': 'hsl(var(--code-border))',
+				'terminal-green': 'hsl(var(--terminal-green))',
+				'warning-orange': 'hsl(var(--warning-orange))',
+				'error-red': 'hsl(var(--error-red))',
+				'success-green': 'hsl(var(--success-green))',
+				'info-blue': 'hsl(var(--info-blue))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
