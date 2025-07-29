@@ -22,6 +22,9 @@ export default {
 				'poppins': ['Poppins', 'sans-serif'],
 				'inter': ['Inter', 'sans-serif'],
 				'sans': ['Inter', 'sans-serif'],
+				'heading': 'var(--font-heading)',
+				'body': 'var(--font-body)',
+				'code': 'var(--font-code)',
 			},
 			colors: {
 				border: 'hsl(var(--border))',
