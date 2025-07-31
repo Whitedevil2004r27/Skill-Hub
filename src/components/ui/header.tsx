@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, GraduationCap } from "lucide-react";
+import { Menu, X, GraduationCap, User, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   return (
     <header className="fixed top-0 w-full glass border-b border-white/10 z-50">
@@ -42,12 +44,40 @@ export const Header = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login">
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">Sign In</Button>
-            </Link>
-            <Link to="/register">
-              <Button className="bg-gradient-primary text-white shadow-purple-glow hover-glow">Get Started</Button>
-            </Link>
+            {user ? (
+              <>
+                <div className="flex items-center space-x-2 text-white/80">
+                  <User className="h-4 w-4" />
+                  <span className="text-sm">{user.user_metadata?.full_name || user.email}</span>
+                </div>
+                <Link to="/join-learner">
+                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 text-xs">
+                    Join as Learner
+                  </Button>
+                </Link>
+                <Link to="/become-mentor">
+                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 text-xs">
+                    Become Mentor
+                  </Button>
+                </Link>
+                <Button 
+                  onClick={() => signOut()}
+                  variant="outline" 
+                  className="border-white/30 text-white hover:bg-white/10"
+                >
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">Sign In</Button>
+                </Link>
+                <Link to="/register">
+                  <Button className="bg-gradient-primary text-white shadow-purple-glow hover-glow">Get Started</Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -82,12 +112,41 @@ export const Header = () => {
                 Contact
               </Link>
               <div className="flex flex-col space-y-2 pt-4">
-                <Link to="/login">
-                  <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">Sign In</Button>
-                </Link>
-                <Link to="/register">
-                  <Button className="w-full bg-gradient-primary text-white">Get Started</Button>
-                </Link>
+                {user ? (
+                  <>
+                    <div className="flex items-center space-x-2 text-white/80 py-2">
+                      <User className="h-4 w-4" />
+                      <span className="text-sm">{user.user_metadata?.full_name || user.email}</span>
+                    </div>
+                    <Link to="/join-learner">
+                      <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">
+                        Join as Learner
+                      </Button>
+                    </Link>
+                    <Link to="/become-mentor">
+                      <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">
+                        Become Mentor
+                      </Button>
+                    </Link>
+                    <Button 
+                      onClick={() => signOut()}
+                      variant="outline" 
+                      className="w-full border-white/30 text-white hover:bg-white/10"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login">
+                      <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">Sign In</Button>
+                    </Link>
+                    <Link to="/register">
+                      <Button className="w-full bg-gradient-primary text-white">Get Started</Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>

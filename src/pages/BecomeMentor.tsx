@@ -9,9 +9,14 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Users, Award, Clock, DollarSign, Star, ChevronRight, ChevronLeft, Crown, Code2, Sparkles, Trophy, Target, Zap } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const BecomeMentor = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [expertise, setExpertise] = useState<string[]>([]);
   const [experience, setExperience] = useState("");
@@ -19,6 +24,7 @@ const BecomeMentor = () => {
   const [hourlyRate, setHourlyRate] = useState("");
   const [availability, setAvailability] = useState("");
   const [mentorshipStyle, setMentorshipStyle] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const skillOptions = [
     "JavaScript", "Python", "React", "Node.js", "TypeScript", "CSS", 
@@ -47,9 +53,45 @@ const BecomeMentor = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
-  const handleSubmit = () => {
-    // Handle mentor profile creation
-    navigate("/dashboard");
+  const handleSubmit = async () => {
+    if (!user) return;
+    
+    setSaving(true);
+    try {
+      // Update user profile with mentor role and information
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          role: 'mentor',
+        })
+        .eq('user_id', user.id);
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to save your mentor profile. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Application Submitted!",
+        description: "Your mentor application has been submitted for review. We'll contact you soon!",
+        variant: "default",
+      });
+      
+      // Redirect to main page
+      navigate("/");
+    } catch (error) {
+      toast({
+        title: "Error", 
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const progressPercentage = (currentStep / 3) * 100;
@@ -400,11 +442,15 @@ const BecomeMentor = () => {
               ) : (
                 <Button
                   onClick={handleSubmit}
-                  disabled={!availability}
+                  disabled={!availability || saving}
                   className="flex-1 bg-gradient-to-r from-green-600 to-purple-600 hover:from-green-700 hover:to-purple-700 text-white shadow-lg shadow-green-500/25"
                 >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Start Mentoring
+                  {saving ? (
+                    <div className="w-4 h-4 mr-2 border-2 border-white/20 border-t-white animate-spin rounded-full" />
+                  ) : (
+                    <Zap className="w-4 h-4 mr-2" />
+                  )}
+                  {saving ? 'Submitting...' : 'Start Mentoring'}
                 </Button>
               )}
             </motion.div>

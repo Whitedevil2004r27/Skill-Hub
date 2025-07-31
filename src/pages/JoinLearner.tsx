@@ -8,14 +8,20 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BookOpen, Target, Trophy, Users, Clock, Star, Zap, Brain, Code, Rocket, ChevronRight, ChevronLeft } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const JoinLearner = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [goals, setGoals] = useState("");
   const [availability, setAvailability] = useState("");
   const [learningStyle, setLearningStyle] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const skillOptions = [
     "JavaScript", "Python", "React", "Node.js", "TypeScript", "CSS", 
@@ -47,9 +53,45 @@ const JoinLearner = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
-  const handleSubmit = () => {
-    // Handle learner profile creation
-    navigate("/dashboard");
+  const handleSubmit = async () => {
+    if (!user) return;
+    
+    setSaving(true);
+    try {
+      // Update user profile with learner role and preferences
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          role: 'learner',
+        })
+        .eq('user_id', user.id);
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to save your profile. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Welcome!",
+        description: "Your learner profile has been created successfully.",
+        variant: "default",
+      });
+      
+      // Redirect to main dashboard or learner dashboard
+      navigate("/");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const progressPercentage = (currentStep / 2) * 100;
@@ -300,11 +342,15 @@ const JoinLearner = () => {
               ) : (
                 <Button
                   onClick={handleSubmit}
-                  disabled={!learningStyle || !availability}
+                  disabled={!learningStyle || !availability || saving}
                   className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/25"
                 >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Start Learning Journey
+                  {saving ? (
+                    <div className="w-4 h-4 mr-2 border-2 border-white/20 border-t-white animate-spin rounded-full" />
+                  ) : (
+                    <Zap className="w-4 h-4 mr-2" />
+                  )}
+                  {saving ? 'Saving...' : 'Start Learning Journey'}
                 </Button>
               )}
             </motion.div>
