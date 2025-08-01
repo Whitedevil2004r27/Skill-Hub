@@ -1,3 +1,4 @@
+// src/hooks/useAuth.tsx
 import { useState, useEffect, createContext, useContext } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,7 +9,6 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
-  signInWithGitHub: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -29,16 +29,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    );
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -48,29 +44,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (redirectPath: string = '/') => {
     try {
-      const redirectUrl = `${window.location.origin}/auth/callback`;
+      const redirectUrl = `${window.location.origin}/`;
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: redirectUrl
-        }
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
       });
 
       if (error) {
         toast({
-          title: "Authentication Error",
+          title: 'Authentication Error',
           description: error.message,
-          variant: "destructive",
+          variant: 'destructive',
         });
       }
     } catch (error) {
       toast({
-        title: "Authentication Error", 
-        description: "An unexpected error occurred during login",
-        variant: "destructive",
+        title: 'Authentication Error',
+        description: 'An unexpected error occurred during login',
+        variant: 'destructive',
       });
     }
   };
@@ -107,21 +103,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { error } = await supabase.auth.signOut();
       if (error) {
         toast({
-          title: "Sign Out Error",
+          title: 'Sign Out Error',
           description: error.message,
-          variant: "destructive",
+          variant: 'destructive',
         });
       } else {
         toast({
-          title: "Signed Out",
-          description: "You have been successfully signed out",
+          title: 'Signed Out',
+          description: 'You have been successfully signed out',
         });
       }
     } catch (error) {
       toast({
-        title: "Sign Out Error",
-        description: "An unexpected error occurred during sign out",
-        variant: "destructive",
+        title: 'Sign Out Error',
+        description: 'An unexpected error occurred during sign out',
+        variant: 'destructive',
       });
     }
   };
@@ -131,7 +127,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     session,
     loading,
     signInWithGoogle,
-    signInWithGitHub,
     signOut
   };
 

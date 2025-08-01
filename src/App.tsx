@@ -20,6 +20,8 @@ import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
+import AuthCallback from "./pages/AuthCallback";
+
 
 const queryClient = new QueryClient();
 
@@ -37,6 +39,7 @@ const App = () => (
             <Route path="/explore" element={<Explore />} />
             <Route path="/about" element={<About />} />
             <Route path="/courses" element={<Courses />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/community" element={<Community />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
