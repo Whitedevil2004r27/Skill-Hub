@@ -8,6 +8,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  signInWithGitHub: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -49,7 +50,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signInWithGoogle = async () => {
     try {
-      const redirectUrl = `${window.location.origin}/`;
+      const redirectUrl = `${window.location.origin}/auth/callback`;
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -69,6 +70,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       toast({
         title: "Authentication Error", 
         description: "An unexpected error occurred during login",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const signInWithGitHub = async () => {
+    try {
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+      
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: redirectUrl
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Authentication Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Authentication Error", 
+        description: "An unexpected error occurred during GitHub login",
         variant: "destructive",
       });
     }
@@ -103,6 +131,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     session,
     loading,
     signInWithGoogle,
+    signInWithGitHub,
     signOut
   };
 

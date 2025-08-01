@@ -18,6 +18,7 @@ import JoinLearner from "./pages/JoinLearner";
 import BecomeMentor from "./pages/BecomeMentor";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
+import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/courses" element={<Courses />} />
             <Route path="/community" element={<Community />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/onboarding" element={
               <ProtectedRoute>
                 <Onboarding />

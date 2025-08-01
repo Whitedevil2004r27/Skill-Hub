@@ -13,7 +13,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signInWithGoogle, user } = useAuth();
+  const { signInWithGoogle, signInWithGitHub, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -36,6 +36,15 @@ export default function Login() {
     setLoading(true);
     try {
       await signInWithGoogle();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGitHubLogin = async () => {
+    setLoading(true);
+    try {
+      await signInWithGitHub();
     } finally {
       setLoading(false);
     }
@@ -68,14 +77,15 @@ export default function Login() {
               <Button 
                 variant="outline" 
                 className="border-white/30 text-white hover:bg-white/10"
-                onClick={() => toast({
-                  title: "GitHub Login",
-                  description: "GitHub OAuth will be implemented in the next phase.",
-                  variant: "default",
-                })}
+                onClick={handleGitHubLogin}
+                disabled={loading}
               >
-                <Github className="mr-2 h-4 w-4" />
-                GitHub
+                {loading ? (
+                  <div className="w-4 h-4 mr-2 border-2 border-white/20 border-t-white animate-spin rounded-full" />
+                ) : (
+                  <Github className="mr-2 h-4 w-4" />
+                )}
+                {loading ? 'Signing in...' : 'GitHub'}
               </Button>
               <Button 
                 variant="outline" 

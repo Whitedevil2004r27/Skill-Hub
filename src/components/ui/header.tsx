@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Menu, X, GraduationCap, User, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useProfile } from "@/hooks/useProfile";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { profile } = useProfile();
 
   return (
     <header className="fixed top-0 w-full glass border-b border-white/10 z-50">
@@ -46,18 +49,20 @@ export const Header = () => {
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <>
-                <div className="flex items-center space-x-2 text-white/80">
-                  <User className="h-4 w-4" />
-                  <span className="text-sm">{user.user_metadata?.full_name || user.email}</span>
+                <div className="flex items-center space-x-3">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={profile?.avatar_url || user.user_metadata?.avatar_url} />
+                    <AvatarFallback className="bg-gradient-primary text-white text-xs">
+                      {(profile?.display_name || user.user_metadata?.full_name || user.email || 'U').charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm text-white/90">
+                    {profile?.display_name || user.user_metadata?.full_name || user.email}
+                  </span>
                 </div>
-                <Link to="/join-learner">
+                <Link to="/dashboard">
                   <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 text-xs">
-                    Join as Learner
-                  </Button>
-                </Link>
-                <Link to="/become-mentor">
-                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 text-xs">
-                    Become Mentor
+                    Dashboard
                   </Button>
                 </Link>
                 <Button 
@@ -114,18 +119,20 @@ export const Header = () => {
               <div className="flex flex-col space-y-2 pt-4">
                 {user ? (
                   <>
-                    <div className="flex items-center space-x-2 text-white/80 py-2">
-                      <User className="h-4 w-4" />
-                      <span className="text-sm">{user.user_metadata?.full_name || user.email}</span>
+                    <div className="flex items-center space-x-3 py-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={profile?.avatar_url || user.user_metadata?.avatar_url} />
+                        <AvatarFallback className="bg-gradient-primary text-white text-xs">
+                          {(profile?.display_name || user.user_metadata?.full_name || user.email || 'U').charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm text-white/90">
+                        {profile?.display_name || user.user_metadata?.full_name || user.email}
+                      </span>
                     </div>
-                    <Link to="/join-learner">
+                    <Link to="/dashboard">
                       <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">
-                        Join as Learner
-                      </Button>
-                    </Link>
-                    <Link to="/become-mentor">
-                      <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">
-                        Become Mentor
+                        Dashboard
                       </Button>
                     </Link>
                     <Button 
