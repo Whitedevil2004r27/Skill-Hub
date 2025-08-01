@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { OnboardingRedirect } from "@/components/OnboardingRedirect";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -15,6 +16,8 @@ import Community from "./pages/Community";
 import Contact from "./pages/Contact";
 import JoinLearner from "./pages/JoinLearner";
 import BecomeMentor from "./pages/BecomeMentor";
+import Onboarding from "./pages/Onboarding";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,14 +38,30 @@ const App = () => (
             <Route path="/courses" element={<Courses />} />
             <Route path="/community" element={<Community />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/onboarding" element={
+              <ProtectedRoute>
+                <Onboarding />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <OnboardingRedirect>
+                  <Dashboard />
+                </OnboardingRedirect>
+              </ProtectedRoute>
+            } />
             <Route path="/join-learner" element={
               <ProtectedRoute>
-                <JoinLearner />
+                <OnboardingRedirect>
+                  <JoinLearner />
+                </OnboardingRedirect>
               </ProtectedRoute>
             } />
             <Route path="/become-mentor" element={
               <ProtectedRoute>
-                <BecomeMentor />
+                <OnboardingRedirect>
+                  <BecomeMentor />
+                </OnboardingRedirect>
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

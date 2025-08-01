@@ -81,8 +81,8 @@ const JoinLearner = () => {
         variant: "default",
       });
       
-      // Redirect to main dashboard or learner dashboard
-      navigate("/");
+      // Redirect to dashboard
+      navigate("/dashboard");
     } catch (error) {
       toast({
         title: "Error",

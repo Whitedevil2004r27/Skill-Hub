@@ -81,8 +81,8 @@ const BecomeMentor = () => {
         variant: "default",
       });
       
-      // Redirect to main page
-      navigate("/");
+      // Redirect to dashboard
+      navigate("/dashboard");
     } catch (error) {
       toast({
         title: "Error", 
