@@ -113,78 +113,38 @@ export const supabase = createClient(
 npm run dev
 ```
 
-The app will be running on `http://localhost:3000`.
+**Edit a file directly in GitHub**
 
----
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
 
-## 🔐 Supabase Auth Setup
+**Use GitHub Codespaces**
 
-- Create a Supabase project
-- Enable **Google OAuth Provider** under **Authentication > Providers**
-- Set redirect URL:
-  ```
-  http://localhost:3000/
-  ```
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-- Your `supabase.auth.signInWithOAuth` will handle redirection automatically
-- After login, users will be redirected to the correct page based on stored role in Supabase
+## What technologies are used for this project?
 
----
+This project is built with:
 
-## 🎨 UI Design System
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
 
-**Palette**:
-- `#010030` – Ultra dark background
-- `#160078` – Indigo primary
-- `#7226FF` – Vibrant violet accent
+## How can I deploy this project?
 
-**Typography**:
-- Inter font (Google Fonts)
-- Clean hierarchy with Tailwind utility classes
+Simply open [Lovable](https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28) and click on Share -> Publish.
 
-**Component Library**:
-- shadcn/ui
-- React Icons
-- Animations via Framer Motion (optional)
+## Can I connect a custom domain to my Lovable project?
 
----
+Yes, you can!
 
-## 📦 Deployment
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-### Lovable (Recommended)
-
-Visit [https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28](https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28) and click:
-
-```
-→ Share → Publish
-```
-
-### Vercel / Netlify / Render
-
-1. Push repo to GitHub
-2. Connect GitHub repo to Vercel or Netlify
-3. Set environment variables (if moved from client.ts to .env)
-4. Deploy
-
----
-
-## 🙋 About the Author
-
-**Ravi Kumar J**  
-Frontend Developer | UI/UX Designer
-
-- 💼 [Portfolio](https://rk-portfolio-orpin.vercel.app/)
-- 🔗 [LinkedIn](https://www.linkedin.com/in/ravikumarj27)
-- 💻 [GitHub](https://github.com/Whitedevil2004r27)
-- 📬 [Email](mailto:ravikumarofficial227@gmail.com)
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.  
-You are free to use, distribute, and modify this project with proper attribution.
-
----
-
-> Designed with precision, built with passion. 💻✨
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
