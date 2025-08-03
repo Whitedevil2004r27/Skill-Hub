@@ -1,73 +1,190 @@
-# Welcome to your Lovable project
+# 🧠 Mentor Nexus AI
 
-## Project info
+Mentor Nexus AI is a smart mentorship matchmaking platform that connects learners with verified mentors using role-based authentication. It leverages Supabase Auth with Google OAuth, shadcn/ui components, and a sleek dark UI powered by Vite, React, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28
+> 🎯 **Built with scalability, speed, and elegant design in mind.**
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🌐 Live Project
 
-**Use Lovable**
+🔗 [Visit Mentor Nexus AI on Lovable](https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📌 Table of Contents
 
-**Use your preferred IDE**
+- [✨ Features](#-features)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📁 Project Structure](#-project-structure)
+- [🚀 Getting Started](#-getting-started)
+- [🔐 Supabase Auth Setup](#-supabase-auth-setup)
+- [🎨 UI Design System](#-ui-design-system)
+- [📦 Deployment](#-deployment)
+- [🙋 About the Author](#-about-the-author)
+- [📄 License](#-license)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## ✨ Features
 
-Follow these steps:
+- 🔐 Google OAuth Login via Supabase
+- 🎯 Role-based redirection: `/join-learner` or `/become-mentor`
+- ✅ Protected routes using `ProtectedRoute`
+- 📦 Centralized Auth context via React Context API
+- 💬 Toast notifications via custom hook
+- 🎨 Full dark mode interface using Tailwind and shadcn/ui
+- ⚡ Fast and optimized with Vite + React + TypeScript
+- 💡 Modular structure for easy scalability
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🛠️ Tech Stack
 
-# Step 3: Install the necessary dependencies.
-npm i
+| Technology         | Description                                  |
+|--------------------|----------------------------------------------|
+| Vite               | Fast build tool for modern React apps        |
+| React + TypeScript | Frontend UI and typed components             |
+| Supabase           | Backend as a service with OAuth & database   |
+| Tailwind CSS       | Utility-first CSS framework                  |
+| shadcn/ui          | Accessible, customizable component library   |
+| React Query        | Powerful data-fetching + state management    |
+| React Router       | Dynamic client-side routing                  |
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── ProtectedRoute.tsx         # Auth route guard
+├── hooks/
+│   └── useAuth.tsx                # Auth context logic
+├── integrations/
+│   └── supabase/
+│       └── client.ts              # Supabase client setup
+├── pages/
+│   ├── Index.tsx                  # Home page
+│   ├── Login.tsx                  # Sign-in with Google
+│   ├── Register.tsx               # Register (optional)
+│   ├── AuthCallback.tsx           # OAuth redirect handler
+│   ├── JoinLearner.tsx            # Learner dashboard
+│   ├── BecomeMentor.tsx           # Mentor dashboard
+│   └── NotFound.tsx               # 404 fallback
+└── App.tsx                        # Root app with all routes/providers
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js & npm (use [nvm](https://github.com/nvm-sh/nvm) to install)
+- A Supabase project + Google OAuth enabled
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/mentor-nexus-ai.git
+cd mentor-nexus-ai
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Create `.env` or use direct config (already in `client.ts`)
+
+```ts
+// src/integrations/supabase/client.ts
+export const supabase = createClient(
+  "https://<your-project>.supabase.co",
+  "public-anon-key"
+);
+```
+
+### 4. Run the development server
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be running on `http://localhost:3000`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+## 🔐 Supabase Auth Setup
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- Create a Supabase project
+- Enable **Google OAuth Provider** under **Authentication > Providers**
+- Set redirect URL:
+  ```
+  http://localhost:3000/
+  ```
 
-## What technologies are used for this project?
+- Your `supabase.auth.signInWithOAuth` will handle redirection automatically
+- After login, users will be redirected to the correct page based on stored role in Supabase
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🎨 UI Design System
 
-## How can I deploy this project?
+**Palette**:
+- `#010030` – Ultra dark background
+- `#160078` – Indigo primary
+- `#7226FF` – Vibrant violet accent
 
-Simply open [Lovable](https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28) and click on Share -> Publish.
+**Typography**:
+- Inter font (Google Fonts)
+- Clean hierarchy with Tailwind utility classes
 
-## Can I connect a custom domain to my Lovable project?
+**Component Library**:
+- shadcn/ui
+- React Icons
+- Animations via Framer Motion (optional)
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📦 Deployment
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### Lovable (Recommended)
+
+Visit [https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28](https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28) and click:
+
+```
+→ Share → Publish
+```
+
+### Vercel / Netlify / Render
+
+1. Push repo to GitHub
+2. Connect GitHub repo to Vercel or Netlify
+3. Set environment variables (if moved from client.ts to .env)
+4. Deploy
+
+---
+
+## 🙋 About the Author
+
+**Ravi Kumar J**  
+Frontend Developer | UI/UX Designer
+
+- 💼 [Portfolio](https://rk-portfolio-orpin.vercel.app/)
+- 🔗 [LinkedIn](https://www.linkedin.com/in/ravikumarj27)
+- 💻 [GitHub](https://github.com/Whitedevil2004r27)
+- 📬 [Email](mailto:ravikumarofficial227@gmail.com)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.  
+You are free to use, distribute, and modify this project with proper attribution.
+
+---
+
+> Designed with precision, built with passion. 💻✨
