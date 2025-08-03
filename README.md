@@ -1,150 +1,115 @@
-# 🧠 Mentor Nexus AI
+# 🚀 Welcome to SkillHub
 
-Mentor Nexus AI is a smart mentorship matchmaking platform that connects learners with verified mentors using role-based authentication. It leverages Supabase Auth with Google OAuth, shadcn/ui components, and a sleek dark UI powered by Vite, React, and Tailwind CSS.
-
-> 🎯 **Built with scalability, speed, and elegant design in mind.**
+SkillHub is a modern, community-driven platform built to help learners and mentors connect through certified courses, mentorship programs, and collaborative learning.
 
 ---
 
 ## 🌐 Live Project
 
-🔗 [Visit Mentor Nexus AI on Lovable](https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28)
+**URL**: [https://lovable.dev/projects/skillhub](https://lovable.dev/projects/skillhub)
 
 ---
 
-## 📌 Table of Contents
+## 🛠 Tech Stack
 
-- [✨ Features](#-features)
-- [🛠️ Tech Stack](#️-tech-stack)
-- [📁 Project Structure](#-project-structure)
-- [🚀 Getting Started](#-getting-started)
-- [🔐 Supabase Auth Setup](#-supabase-auth-setup)
-- [🎨 UI Design System](#-ui-design-system)
-- [📦 Deployment](#-deployment)
-- [🙋 About the Author](#-about-the-author)
-- [📄 License](#-license)
+SkillHub leverages modern, scalable tools:
+
+- ⚡️ [Vite](https://vitejs.dev/) — Lightning-fast build tool
+- 🧠 [TypeScript](https://www.typescriptlang.org/) — Strongly typed JavaScript
+- ⚛️ [React](https://react.dev/) — Component-based UI framework
+- 💅 [Tailwind CSS](https://tailwindcss.com/) — Utility-first styling
+- 🧩 [shadcn/ui](https://ui.shadcn.com/) — Prebuilt, accessible UI components
+- 🔐 [Supabase](https://supabase.com/) — Authentication & database
+- 🔄 [TanStack Query](https://tanstack.com/query) — Data fetching and caching
 
 ---
 
 ## ✨ Features
 
-- 🔐 Google OAuth Login via Supabase
-- 🎯 Role-based redirection: `/join-learner` or `/become-mentor`
-- ✅ Protected routes using `ProtectedRoute`
-- 📦 Centralized Auth context via React Context API
-- 💬 Toast notifications via custom hook
-- 🎨 Full dark mode interface using Tailwind and shadcn/ui
-- ⚡ Fast and optimized with Vite + React + TypeScript
-- 💡 Modular structure for easy scalability
+- 🔐 Google OAuth 2.0 Authentication
+- 🧑‍🎓 Learner Onboarding: `/join-learner`
+- 🧑‍🏫 Mentor Onboarding: `/become-mentor`
+- 🧭 Protected routes for authenticated users
+- 📚 Explore Free & Paid Certified Courses
+- 🌙 Full Dark UI (Violet & Indigo Palette)
+- 📱 Fully Responsive Design
+- ✅ Supabase Session Persistence
+- 🎉 Toast Alerts, Tooltips & More via shadcn/ui
 
 ---
 
-## 🛠️ Tech Stack
-
-| Technology         | Description                                  |
-|--------------------|----------------------------------------------|
-| Vite               | Fast build tool for modern React apps        |
-| React + TypeScript | Frontend UI and typed components             |
-| Supabase           | Backend as a service with OAuth & database   |
-| Tailwind CSS       | Utility-first CSS framework                  |
-| shadcn/ui          | Accessible, customizable component library   |
-| React Query        | Powerful data-fetching + state management    |
-| React Router       | Dynamic client-side routing                  |
-
----
-
-## 📁 Project Structure
-
-```
-src/
-├── components/
-│   ├── ProtectedRoute.tsx         # Auth route guard
-├── hooks/
-│   └── useAuth.tsx                # Auth context logic
-├── integrations/
-│   └── supabase/
-│       └── client.ts              # Supabase client setup
-├── pages/
-│   ├── Index.tsx                  # Home page
-│   ├── Login.tsx                  # Sign-in with Google
-│   ├── Register.tsx               # Register (optional)
-│   ├── AuthCallback.tsx           # OAuth redirect handler
-│   ├── JoinLearner.tsx            # Learner dashboard
-│   ├── BecomeMentor.tsx           # Mentor dashboard
-│   └── NotFound.tsx               # 404 fallback
-└── App.tsx                        # Root app with all routes/providers
-```
-
----
-
-## 🚀 Getting Started
+## 🧑‍💻 Getting Started
 
 ### Prerequisites
 
-- Node.js & npm (use [nvm](https://github.com/nvm-sh/nvm) to install)
-- A Supabase project + Google OAuth enabled
+- Node.js (v18+)
+- npm or pnpm installed
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/your-username/mentor-nexus-ai.git
-cd mentor-nexus-ai
-```
-
-### 2. Install dependencies
+### Setup
 
 ```bash
+# Clone the repo
+git clone https://github.com/your-username/skillhub.git
+
+# Enter project directory
+cd skillhub
+
+# Install dependencies
 npm install
-```
 
-### 3. Create `.env` or use direct config (already in `client.ts`)
-
-```ts
-// src/integrations/supabase/client.ts
-export const supabase = createClient(
-  "https://<your-project>.supabase.co",
-  "public-anon-key"
-);
-```
-
-### 4. Run the development server
-
-```bash
+# Run development server
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+📁 Folder Structure
+bash
+Copy code
+src/
+├── components/        # UI components (buttons, nav, etc.)
+├── pages/             # Page components (Login, Register, Explore...)
+├── hooks/             # Custom React hooks (auth, toast)
+├── integrations/
+│   └── supabase/      # Supabase client and type definitions
+├── styles/            # Global Tailwind styles
+└── App.tsx            # App entry point
+☁️ Deployment
+SkillHub is deployable in seconds using Lovable:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Open your project in Lovable.
 
-**Use GitHub Codespaces**
+Click Share → Publish.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Optionally connect a custom domain in Settings > Domains.
 
-## What technologies are used for this project?
+🧠 Guide: Custom Domain Setup
 
-This project is built with:
+💡 Editing Options
+You can work on this project in different ways:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Use Lovable: Prompt and edit directly via the Lovable UI.
 
-## How can I deploy this project?
+Use your IDE: Clone and code locally, then push to GitHub.
 
-Simply open [Lovable](https://lovable.dev/projects/c463c460-ba1a-4de8-b7fe-143afc685b28) and click on Share -> Publish.
+GitHub Codespaces: Edit and preview directly in-browser.
 
-## Can I connect a custom domain to my Lovable project?
+🤝 Connect With Me
+GitHub: @Whitedevil2004r27
 
-Yes, you can!
+LinkedIn: Ravikumar J
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Portfolio: rk-portfolio
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Email: ravikumar2004rkk27@gmail.com
+
+Built with 💜 by Ravikumar — Designed to empower learning communities.
+
+yaml
+Copy code
+
+---
+
+Let me know if you want to include:
+
+- License section (e.g., MIT)
+- Contribution guidelines
+- Badges (like build passing, license, etc.)
+- Demo screenshots or GIFs
