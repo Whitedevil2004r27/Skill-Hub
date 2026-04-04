@@ -1,0 +1,34 @@
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      # Add other environment variables as needed, or use env_file
+    env_file:
+      - ./backend/.env
+    networks:
+      - skillhub-network
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:3001/api
+    env_file:
+      - ./frontend/.env.local
+    depends_on:
+      - api
+    networks:
+      - skillhub-network
+
+networks:
+  skillhub-network:
+    driver: bridge
