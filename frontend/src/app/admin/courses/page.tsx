@@ -60,10 +60,12 @@ export default function CourseManagement() {
           <h1 className="text-3xl font-bold tracking-tight">Course Management</h1>
           <p className="text-zinc-500 mt-1">Create, edit, and organize your educational curriculum.</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-500 px-6">
-          <Plus className="w-4 h-4 mr-2" />
-          Create New Course
-        </Button>
+        <Link href="/admin/courses/new">
+          <Button className="bg-blue-600 hover:bg-blue-500 px-6">
+            <Plus className="w-4 h-4 mr-2" />
+            Create New Course
+          </Button>
+        </Link>
       </div>
 
       <div className="relative w-full sm:w-96">

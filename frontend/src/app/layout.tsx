@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   description: "Connect, Learn, and Grow Together with AI-powered mentorship matching",
 };
 
+import { SmoothScroll } from "@/components/animations/SmoothScroll";
+import { PageTransition } from "@/components/animations/PageTransition";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +33,13 @@ export default function RootLayout({
       className={`${inter.variable} ${poppins.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <Providers>{children}</Providers>
+        <Providers>
+          <SmoothScroll>
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </SmoothScroll>
+        </Providers>
       </body>
     </html>
   );

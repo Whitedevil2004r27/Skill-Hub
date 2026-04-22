@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 import { useEnrollments } from "@/hooks/useEnrollments";
-import { useSessions, useUpdateMeetingLink, useUpdateSessionStatus } from "@/hooks/useSessions";
+import { useSessions, useUpdateMeetingLink, useUpdateSessionStatus, type Session } from "@/hooks/useSessions";
 import { useRecentChats } from "@/hooks/useMessages";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
@@ -20,7 +21,16 @@ import {
   SheetTitle 
 } from "@/components/ui/sheet";
 import { ChatWindow } from "@/components/chat/ChatWindow";
-import { BookOpen, Users, Calendar, Star, MessageSquare, Trophy, Settings, Zap } from "lucide-react";
+import { BookOpen, Users, Calendar, Star, MessageSquare, Trophy, Settings, Zap, BarChart as BarChartIcon } from "lucide-react";
+import BackgroundCanvas from "@/components/animations/BackgroundCanvas";
+import { TiltCard } from "@/components/animations/TiltCard";
+import { 
+  ChartContainer, 
+  ChartTooltip, 
+  ChartTooltipContent, 
+  ChartConfig 
+} from "@/components/ui/chart";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -30,6 +40,7 @@ export default function DashboardPage() {
   const { data: recentChats, isLoading: chatsLoading } = useRecentChats();
   const { mutate: updateLink, isPending: isUpdatingLink } = useUpdateMeetingLink();
   const { mutate: updateStatus } = useUpdateSessionStatus();
+  const router = useRouter();
   
   const [activeChatUser, setActiveChatUser] = useState<{ id: string, name: string, avatar?: string } | null>(null);
   const [reviewSession, setReviewSession] = useState<{ id: string, mentorId: string, mentorName: string } | null>(null);
@@ -38,6 +49,27 @@ export default function DashboardPage() {
     if (!name) return "U";
     return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
   };
+
+  const chartData = [
+    { day: "Mon", sessions: 2, progress: 45 },
+    { day: "Tue", sessions: 1, progress: 30 },
+    { day: "Wed", sessions: 4, progress: 85 },
+    { day: "Thu", sessions: 3, progress: 60 },
+    { day: "Fri", sessions: 2, progress: 50 },
+    { day: "Sat", sessions: 5, progress: 95 },
+    { day: "Sun", sessions: 0, progress: 0 },
+  ];
+
+  const chartConfig = {
+    progress: {
+      label: "Learning Progress",
+      color: "hsl(var(--primary))",
+    },
+    sessions: {
+      label: "Mentorship Sessions",
+      color: "#8b5cf6",
+    },
+  } satisfies ChartConfig;
 
   const getRoleBadgeColor = (role: string | null) => {
     switch (role) {
@@ -51,10 +83,11 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900/20 to-blue-900/30">
+    <div className="min-h-screen relative overflow-hidden">
+      <BackgroundCanvas />
       <Header />
       
-      <main className="w-full px-6 md:px-12 lg:px-8 py-24">
+      <main className="w-full px-6 md:px-12 lg:px-8 py-24 relative z-10">
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-6">
             <Avatar className="w-16 h-16 border-2 border-white/10">
@@ -72,7 +105,7 @@ export default function DashboardPage() {
                   {profile?.role ? profile.role.charAt(0).toUpperCase() + profile.role.slice(1) : 'No Role'}
                 </Badge>
                 <span className="text-white/40 text-xs px-2 py-1 border border-white/5 rounded-full bg-white/5">
-                  Phase 2 Active
+                  Production Ready
                 </span>
               </div>
             </div>
@@ -81,80 +114,123 @@ export default function DashboardPage() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-white/5 border-white/10 backdrop-blur-md">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-white text-sm font-medium">
-                  {profile?.role === 'mentor' ? 'Upcoming Sessions' : 'Courses Enrolled'}
-                </CardTitle>
-                <BookOpen className="w-4 h-4 text-blue-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-white">
-                {profile?.role === 'mentor' ? sessions?.length || 0 : enrollments?.length || 0}
-              </div>
-              <p className="text-xs text-white/40 mt-1">Real-time status</p>
-            </CardContent>
-          </Card>
+          <TiltCard>
+            <Card className="bg-white/5 border-white/10 backdrop-blur-md h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-white text-sm font-medium">
+                    {profile?.role === 'mentor' ? 'Upcoming Sessions' : 'Courses Enrolled'}
+                  </CardTitle>
+                  <BookOpen className="w-4 h-4 text-blue-400" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">
+                  {profile?.role === 'mentor' ? sessions?.length || 0 : enrollments?.length || 0}
+                </div>
+                <p className="text-xs text-white/40 mt-1">Real-time status</p>
+              </CardContent>
+            </Card>
+          </TiltCard>
 
-          <Card className="bg-white/5 border-white/10 backdrop-blur-md">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-white text-sm font-medium">
-                  {profile?.role === 'mentor' ? 'Sessions Completed' : 'Completed Courses'}
-                </CardTitle>
-                <Calendar className="w-4 h-4 text-green-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-white">
-                {profile?.role === 'mentor' 
-                  ? '0' 
-                  : enrollments?.filter(e => e.status === 'completed').length || 0
-                }
-              </div>
-              <p className="text-xs text-white/40 mt-1">Based on records</p>
-            </CardContent>
-          </Card>
+          <TiltCard>
+            <Card className="bg-white/5 border-white/10 backdrop-blur-md h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-white text-sm font-medium">
+                    {profile?.role === 'mentor' ? 'Sessions Completed' : 'Completed Courses'}
+                  </CardTitle>
+                  <Calendar className="w-4 h-4 text-green-400" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">
+                  {profile?.role === 'mentor' 
+                    ? '0' 
+                    : enrollments?.filter(e => e.status === 'completed').length || 0
+                  }
+                </div>
+                <p className="text-xs text-white/40 mt-1">Based on records</p>
+              </CardContent>
+            </Card>
+          </TiltCard>
 
-          <Card className="bg-white/5 border-white/10 backdrop-blur-md">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-white text-sm font-medium">
-                  {profile?.role === 'mentor' ? 'Average Rating' : 'Achievements'}
-                </CardTitle>
-                <Star className="w-4 h-4 text-yellow-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-white">
-                {profile?.role === 'mentor' ? '4.9' : '7'}
-              </div>
-              <p className="text-xs text-white/40 mt-1">
-                {profile?.role === 'mentor' ? 'Out of 5.0' : 'Badges earned'}
-              </p>
-            </CardContent>
-          </Card>
+          <TiltCard>
+            <Card className="bg-white/5 border-white/10 backdrop-blur-md h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-white text-sm font-medium">Messages</CardTitle>
+                  <MessageSquare className="w-4 h-4 text-purple-400" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">
+                  {recentChats?.length || 0}
+                </div>
+                <p className="text-xs text-white/40 mt-1">Active conversations</p>
+              </CardContent>
+            </Card>
+          </TiltCard>
 
-          <Card className="bg-white/5 border-white/10 backdrop-blur-md">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-white text-sm font-medium">Community</CardTitle>
-                <Users className="w-4 h-4 text-purple-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-white">156</div>
-              <p className="text-xs text-white/40 mt-1">Connections made</p>
-            </CardContent>
-          </Card>
+          <TiltCard>
+            <Card className="bg-white/5 border-white/10 backdrop-blur-md h-full">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-white text-sm font-medium">Platform Rank</CardTitle>
+                  <Trophy className="w-4 h-4 text-yellow-400" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">Top 5%</div>
+                <p className="text-xs text-white/40 mt-1">Global ranking</p>
+              </CardContent>
+            </Card>
+          </TiltCard>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-2 bg-white/5 border-white/10 backdrop-blur-md overflow-hidden">
             <CardContent className="pt-6">
               <div className="space-y-8">
+                {/* Activity Analytics */}
+                <div>
+                  <h3 className="text-white/80 text-sm font-semibold mb-6 flex items-center gap-2">
+                    <BarChartIcon className="w-4 h-4 text-emerald-400" />
+                    Learning Activity
+                  </h3>
+                  <div className="h-[300px] w-full">
+                    <ChartContainer config={chartConfig} className="h-full w-full">
+                      <BarChart data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                        <XAxis 
+                          dataKey="day" 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 12 }} 
+                        />
+                        <YAxis 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 12 }} 
+                        />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Bar 
+                          dataKey="progress" 
+                          fill="var(--color-progress)" 
+                          radius={[4, 4, 0, 0]} 
+                          barSize={30}
+                        />
+                        <Bar 
+                          dataKey="sessions" 
+                          fill="var(--color-sessions)" 
+                          radius={[4, 4, 0, 0]} 
+                          barSize={30}
+                        />
+                      </BarChart>
+                    </ChartContainer>
+                  </div>
+                </div>
+
                 {/* Upcoming Sessions - For Everyone */}
                 <div>
                   <h3 className="text-white/80 text-sm font-semibold mb-4 flex items-center gap-2">
@@ -163,33 +239,33 @@ export default function DashboardPage() {
                   </h3>
                   <div className="space-y-4">
                     {sessions && sessions.length > 0 ? (
-                      sessions.map((session) => (
-                        <div key={session.id} className="flex items-center gap-4 p-4 bg-white/5 border border-white/5 rounded-xl hover:bg-white/[0.08] transition-colors group">
+                      sessions.map((sess: Session) => (
+                        <div key={sess.id} className="flex items-center gap-4 p-4 bg-white/5 border border-white/5 rounded-xl hover:bg-white/[0.08] transition-colors group">
                           {profile?.role === 'mentor' ? (
                             <Avatar className="w-12 h-12 border border-white/10">
-                              <AvatarImage src={session.learner?.avatar_url || ""} />
+                              <AvatarImage src={sess.learner?.avatar_url || ""} />
                               <AvatarFallback className="bg-purple-500/20 text-purple-300">
-                                {getInitials(session.learner?.display_name || null)}
+                                {getInitials(sess.learner?.display_name || null)}
                               </AvatarFallback>
                             </Avatar>
                           ) : (
                             <Avatar className="w-12 h-12 border border-white/10">
-                              <AvatarImage src={session.mentor?.avatar_url || ""} />
+                              <AvatarImage src={sess.mentor?.avatar_url || ""} />
                               <AvatarFallback className="bg-blue-500/20 text-blue-300">
-                                {getInitials(session.mentor?.display_name || null)}
+                                {getInitials(sess.mentor?.display_name || null)}
                               </AvatarFallback>
                             </Avatar>
                           )}
                           <div className="flex-1 min-w-0">
                             <h4 className="text-white font-medium truncate">
-                              {profile?.role === 'mentor' ? `Mentoring: ${session.learner?.display_name}` : `Session with ${session.mentor?.display_name}`}
+                              {profile?.role === 'mentor' ? `Mentoring: ${sess.learner?.display_name}` : `Session with ${sess.mentor?.display_name}`}
                             </h4>
                             <p className="text-white/60 text-sm">
-                              {new Date(session.start_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
+                              {new Date(sess.start_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
                             </p>
                           </div>
                           <div className="flex items-center gap-2">
-                            {session.status === 'completed' ? (
+                            {(sess.status as any) === 'completed' ? (
                               <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20">
                                 Completed
                               </Badge>
@@ -200,18 +276,18 @@ export default function DashboardPage() {
                                   size="sm" 
                                   className="text-white border-white/10 hover:bg-blue-600 hover:border-blue-600 transition-colors"
                                   onClick={() => {
-                                    const link = prompt("Enter meeting link (Zoom, GMeet, etc.):", session.meeting_link || "");
-                                    if (link !== null) updateLink({ sessionId: session.id, meetingLink: link });
+                                    const link = prompt("Enter meeting link (Zoom, GMeet, etc.):", sess.meeting_link || "");
+                                    if (link !== null) updateLink({ sessionId: sess.id, meetingLink: link });
                                   }}
                                   disabled={isUpdatingLink}
                                 >
-                                  {session.meeting_link ? 'Update Link' : 'Set Link'}
+                                  {sess.meeting_link ? 'Update Link' : 'Set Link'}
                                 </Button>
                                 <Button 
                                   variant="ghost" 
                                   size="sm" 
                                   className="text-white/40 hover:text-green-400 hover:bg-green-400/10"
-                                  onClick={() => updateStatus({ sessionId: session.id, status: 'completed' })}
+                                  onClick={() => updateStatus({ sessionId: sess.id, status: 'completed' })}
                                 >
                                   Complete
                                 </Button>
@@ -222,20 +298,20 @@ export default function DashboardPage() {
                                   variant="outline" 
                                   size="sm" 
                                   className="text-white border-white/10 hover:bg-blue-600 hover:border-blue-600 disabled:opacity-30 disabled:hover:bg-transparent"
-                                  disabled={!session.meeting_link}
-                                  onClick={() => session.meeting_link && window.open(session.meeting_link, '_blank')}
+                                  disabled={!sess.meeting_link}
+                                  onClick={() => sess.meeting_link && window.open(sess.meeting_link, '_blank')}
                                 >
                                   Join Call
                                 </Button>
-                                {session.status === 'completed' && (
+                                {(sess.status as any) === 'completed' && (
                                   <Button 
                                     variant="ghost" 
                                     size="sm" 
                                     className="text-yellow-400 hover:bg-yellow-400/10"
                                     onClick={() => setReviewSession({ 
-                                      id: session.id, 
-                                      mentorId: session.mentor_id, 
-                                      mentorName: session.mentor?.display_name 
+                                      id: sess.id, 
+                                      mentorId: sess.mentor_id, 
+                                      mentorName: sess.mentor?.display_name 
                                     })}
                                   >
                                     Rate Mentor
@@ -303,11 +379,9 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 )}
-                {(enrollmentsLoading || sessionsLoading) && (
-                   <p className="text-center text-white/40 text-xs italic py-4 animate-pulse">Syncing your Skill-Hub data...</p>
-                )}
               </div>
             </CardContent>
+
           </Card>
 
           <div className="space-y-6">

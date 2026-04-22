@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_URL = 'http://localhost:3001/api';
 import { useAuth } from './useAuth';
 
 interface Profile {
@@ -14,7 +14,7 @@ interface Profile {
 }
 
 export const useProfile = () => {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -28,10 +28,14 @@ export const useProfile = () => {
   }, [user]);
 
   const fetchProfile = async () => {
-    if (!user) return;
+    if (!user || !session) return;
 
     try {
-      const response = await fetch(`${API_URL}/profiles/${user.id}`);
+      const response = await fetch(`${API_URL}/profiles/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         setProfile(data);
@@ -53,6 +57,7 @@ export const useProfile = () => {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify(updates),
       });

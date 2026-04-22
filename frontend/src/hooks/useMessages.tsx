@@ -5,7 +5,7 @@ import { useAuth } from "./useAuth";
 import { supabase } from "@/lib/supabase";
 import { useEffect } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_URL = 'http://localhost:3001/api';
 
 export interface Message {
   id: string;

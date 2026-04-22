@@ -1,69 +1,53 @@
 import { motion } from "framer-motion";
-import { Code, Palette, Database, Brain, Smartphone, TrendingUp } from "lucide-react";
+import { Code, Palette, Database, Brain, Smartphone, TrendingUp, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BentoGrid, BentoItem } from "@/components/BentoGrid";
+import Magnet from "@/components/animations/Magnet";
+import { TiltCard } from "@/components/animations/TiltCard";
 
 const tracks = [
   {
     icon: Code,
     title: "Web Development",
-    description: "Master modern web technologies and frameworks",
-    skills: ["React", "Node.js", "TypeScript", "Next.js"],
-    mentors: 89,
-    gradient: "from-[#7F00FF] to-[#BB86FC]",
-    glow: "shadow-purple-glow"
+    description: "Master modern web technologies and frameworks like React, Node.js, and Next.js.",
+    className: "md:col-span-2",
   },
   {
     icon: Palette,
     title: "UI/UX Design",
-    description: "Create beautiful and user-friendly interfaces",
-    skills: ["Figma", "Design Systems", "User Research", "Prototyping"],
-    mentors: 67,
-    gradient: "from-[#BB86FC] to-[#E100FF]",
-    glow: "shadow-pink-glow"
+    description: "Create beautiful and user-friendly interfaces with Figma and Prototyping.",
+    className: "md:col-span-1",
   },
   {
     icon: Database,
     title: "Data Science",
-    description: "Analyze data and build predictive models",
-    skills: ["Python", "R", "Machine Learning", "SQL"],
-    mentors: 54,
-    gradient: "from-[#E100FF] to-[#D8B4FE]",
-    glow: "shadow-purple-glow"
+    description: "Analyze data and build predictive models with Python and Machine Learning.",
+    className: "md:col-span-1",
   },
   {
     icon: Brain,
-    title: "AI & Machine Learning",
-    description: "Build intelligent systems and neural networks",
-    skills: ["TensorFlow", "PyTorch", "Deep Learning", "NLP"],
-    mentors: 42,
-    gradient: "from-[#D8B4FE] to-[#7F00FF]",
-    glow: "shadow-violet-glow"
+    title: "AI & ML",
+    description: "Build intelligent systems and neural networks with TensorFlow and Deep Learning.",
+    className: "md:col-span-2",
   },
   {
     icon: Smartphone,
-    title: "Mobile Development",
-    description: "Create native and cross-platform mobile apps",
-    skills: ["React Native", "Flutter", "iOS", "Android"],
-    mentors: 38,
-    gradient: "from-[#7F00FF] to-[#E100FF]",
-    glow: "shadow-purple-glow"
+    title: "Mobile Apps",
+    description: "Create native and cross-platform mobile apps with React Native and Flutter.",
+    className: "md:col-span-1",
   },
   {
     icon: TrendingUp,
-    title: "Product Management",
-    description: "Lead product strategy and development",
-    skills: ["Strategy", "Analytics", "Leadership", "Agile"],
-    mentors: 51,
-    gradient: "from-[#BB86FC] to-[#D8B4FE]",
-    glow: "shadow-pink-glow"
+    title: "Product MGMT",
+    description: "Lead product strategy and development with Agile and Analytics.",
+    className: "md:col-span-1",
   }
 ];
 
 export const LearningTracksSection = () => {
   return (
-    <section className="py-24 relative overflow-hidden">
-      {/* Background gradient slice */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#7F00FF]/10 via-transparent to-[#E100FF]/10" />
+    <section className="py-24 relative overflow-hidden bg-[#030303]">
+      <div className="absolute inset-0 bg-gradient-to-t from-violet-600/5 to-transparent pointer-events-none" />
       
       <div className="w-full px-6 md:px-12 lg:px-8 relative z-10">
         <motion.div
@@ -73,86 +57,59 @@ export const LearningTracksSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
+          <div className="inline-flex items-center px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-medium mb-4">
+            <Sparkles className="w-3 h-3 mr-2" />
+            Curated Learning Paths
+          </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Explore <span className="bg-gradient-primary bg-clip-text text-transparent">Learning Tracks</span>
+            Explore <span className="text-violet-500">Learning Tracks</span>
           </h2>
-          <p className="text-xl text-white/80 w-full ">
-            Choose from diverse learning paths crafted by industry experts
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            Choose from diverse learning paths crafted by industry experts to accelerate your career.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <BentoGrid className="max-w-6xl mx-auto">
           {tracks.map((track, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, rotateY: 5 }}
-              className="group perspective-1000"
-            >
-              <div className={`glass-card p-8 hover:${track.glow} transition-all duration-500 border border-white/10 relative overflow-hidden`}>
-                {/* Background glow effect */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${track.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
-                
-                {/* Icon */}
-                <div className={`w-16 h-16  mb-6 rounded-xl bg-gradient-to-br ${track.gradient} p-0.5 group-hover:scale-110 transition-transform duration-300`}>
-                  <div className="w-full h-full rounded-xl bg-black/50 flex items-center justify-center backdrop-blur-sm">
-                    <track.icon className="w-8 h-8 text-white" />
+            <TiltCard key={index} className={track.className}>
+              <BentoItem
+                title={track.title}
+                description={track.description}
+                icon={<track.icon className="w-6 h-6" />}
+                className="h-full"
+                header={
+                  <div className="flex items-center gap-2 mt-2">
+                    <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "60%" }}
+                        className="h-full bg-violet-500/50"
+                      />
+                    </div>
+                    <span className="text-[10px] text-gray-500">Popular</span>
                   </div>
-                </div>
-
-                {/* Content */}
-                <h3 className="text-xl font-bold text-white mb-3 text-center">{track.title}</h3>
-                <p className="text-white/70 text-center mb-6 leading-relaxed">{track.description}</p>
-
-                {/* Skills */}
-                <div className="flex flex-wrap gap-2 mb-6 justify-center">
-                  {track.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 text-xs bg-white/10 text-white rounded-full border border-white/20"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Mentors count */}
-                <div className="text-center mb-6">
-                  <span className="text-accent font-medium">{track.mentors} mentors available</span>
-                </div>
-
-                {/* CTA */}
-                <Button 
-                  className={`w-full bg-gradient-to-r ${track.gradient} text-white hover:scale-105 transition-all duration-300 hover:shadow-lg`}
-                >
-                  Start Learning
-                </Button>
-
-                {/* Decorative elements */}
-                <div className="absolute top-4 right-4 w-2 h-2 bg-accent rounded-full opacity-60 group-hover:animate-pulse" />
-                <div className="absolute bottom-4 left-4 w-1 h-1 bg-white/40 rounded-full opacity-60 group-hover:animate-pulse" />
-              </div>
-            </motion.div>
+                }
+              />
+            </TiltCard>
           ))}
-        </div>
+        </BentoGrid>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <Button 
-            size="lg" 
-            variant="outline" 
-            className="border-white/30 text-white hover:bg-white/10 hover:scale-105 transition-all duration-300"
-          >
-            View All Learning Tracks
-          </Button>
+          <Magnet>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-white/10 bg-white/5 text-white hover:bg-white/10 rounded-2xl px-8"
+            >
+              View All Learning Tracks
+            </Button>
+          </Magnet>
         </motion.div>
       </div>
     </section>

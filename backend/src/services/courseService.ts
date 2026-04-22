@@ -1,5 +1,41 @@
 import { supabase } from '../lib/supabase';
 
+const mockCourses = [
+  {
+    id: "c1",
+    title: "Mastering React & Framer Motion",
+    instructor: "Sarah Chen",
+    description: "Learn to build high-performance, animated web applications with industry-standard tools.",
+    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80",
+    category: "Web Development",
+    level: "Intermediate",
+    duration: "12 hours",
+    rating: 4.9
+  },
+  {
+    id: "c2",
+    title: "Product Strategy for Engineers",
+    instructor: "Marcus Johnson",
+    description: "Bridge the gap between engineering and product to build better features faster.",
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+    category: "Product",
+    level: "Beginner",
+    duration: "8 hours",
+    rating: 4.8
+  },
+  {
+    id: "c3",
+    title: "Advanced System Design",
+    instructor: "David Kim",
+    description: "Deep dive into distributed systems, scalability, and high-availability architecture.",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
+    category: "System Design",
+    level: "Advanced",
+    duration: "20 hours",
+    rating: 5.0
+  }
+];
+
 export class CourseService {
   static async getAllCourses() {
     try {
@@ -9,15 +45,24 @@ export class CourseService {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
+
+      if (!data || data.length === 0) {
+        return mockCourses;
+      }
+
       return data;
     } catch (error) {
       console.error('Error fetching courses:', error);
-      return [];
+      return mockCourses;
     }
   }
 
+
   static async getCourseById(id: string) {
     try {
+      const mock = mockCourses.find(c => c.id === id);
+      if (mock) return mock;
+
       const { data, error } = await supabase
         .from('courses')
         .select('*')
@@ -31,6 +76,7 @@ export class CourseService {
       return null;
     }
   }
+
 
   static async getCourseContent(courseId: string) {
     try {

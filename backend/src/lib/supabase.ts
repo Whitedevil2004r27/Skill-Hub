@@ -2,7 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../types/database';
 import dotenv from 'dotenv';
 
-dotenv.config();
+import path from 'path';
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const SUPABASE_URL = process.env.SUPABASE_URL || "";
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "";

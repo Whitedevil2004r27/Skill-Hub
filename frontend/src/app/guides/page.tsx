@@ -83,7 +83,7 @@ export default function GuidesPage() {
               <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 uppercase tracking-widest leading-tight">Think you can write a better one?</h2>
               <p className="text-white/50 text-xl mb-12 max-w-xl mx-auto text-justify px-3">We're always looking for experts to share their tactical frameworks with our community.</p>
-              <Button size="xl" className="bg-emerald-500 text-white hover:bg-emerald-600 px-12 py-8 text-lg font-black rounded-3xl shadow-emerald-glow">
+              <Button size="lg" className="bg-emerald-500 text-white hover:bg-emerald-600 px-12 py-8 text-lg font-black rounded-3xl shadow-emerald-glow h-auto">
                  Become a Contributor
               </Button>
            </div>

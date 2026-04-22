@@ -48,10 +48,10 @@ export class LessonService {
       const courseId = (lesson as any).modules.course_id;
 
       // 2. Count total lessons for this course
-      const { count: totalLessons, error: tError } = await supabase
-        .from('lessons' as any)
+      const { count: totalLessons, error: tError } = await (supabase as any)
+        .from('lessons')
         .select('id', { count: 'exact', head: true })
-        .eq('module_id.modules.course_id' as any, courseId); // This join might be tricky in Supabase RLS/Simple, better fetch modules first
+        .eq('module_id.modules.course_id', courseId); // This join might be tricky in Supabase RLS/Simple, better fetch modules first
 
       // Simplified: Just get the modules for the course, then count their lessons
       const { data: modules } = await supabase.from('modules' as any).select('id').eq('course_id', courseId);

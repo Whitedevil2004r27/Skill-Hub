@@ -5,7 +5,7 @@ import {
   Users, 
   UserCheck, 
   BookOpen, 
-  TrendUp,
+  TrendingUp,
   Activity,
   ArrowUpRight,
   Plus

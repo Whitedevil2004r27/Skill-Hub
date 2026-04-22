@@ -30,3 +30,18 @@ export const useCourses = () => {
     },
   });
 };
+
+export const useCourse = (id: string) => {
+  return useQuery({
+    queryKey: ["course", id],
+    queryFn: async (): Promise<Course> => {
+      const response = await fetch(`${API_URL}/courses/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch course details");
+      }
+      return response.json();
+    },
+    enabled: !!id,
+  });
+};
+

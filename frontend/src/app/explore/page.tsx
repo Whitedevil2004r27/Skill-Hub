@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
@@ -166,9 +167,11 @@ export default function Explore() {
                         <span className="text-2xl font-bold text-white">${mentor.hourlyRate}</span>
                         <span className="text-white/70">/hour</span>
                       </div>
-                      <Button className="bg-gradient-primary text-white hover-glow">
-                        Book Session
-                      </Button>
+                      <Link href={`/mentors/${mentor.id}`}>
+                        <Button className="bg-gradient-primary text-white hover-glow">
+                          View Profile
+                        </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>

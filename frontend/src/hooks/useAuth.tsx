@@ -1,5 +1,5 @@
 // src/hooks/useAuth.tsx
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
@@ -8,7 +8,10 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: (redirectPath?: string) => Promise<void>;
+  signInWithGitHub: (redirectPath?: string) => Promise<void>;
+  signInWithEmail: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, metadata: any) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -29,106 +32,143 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    // Initialize session and set up listener
+    const initSession = async () => {
+      const { data: { session: initialSession } } = await supabase.auth.getSession();
+      setSession(initialSession);
+      setUser(initialSession?.user ?? null);
       setLoading(false);
-    });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, currentSession) => {
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
+        setLoading(false);
+      });
 
-    return () => subscription.unsubscribe();
+      return subscription;
+    };
+
+    const subscriptionPromise = initSession();
+
+    return () => {
+      subscriptionPromise.then(sub => sub.unsubscribe());
+    };
   }, []);
 
-  const signInWithGoogle = async (redirectPath: string = '/') => {
+  const signInWithGoogle = useCallback(async (redirectPath: string = '/auth/callback') => {
     try {
-      const redirectUrl = `${window.location.origin}/`;
-      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}${redirectPath}`,
         },
       });
 
-      if (error) {
-        toast({
-          title: 'Authentication Error',
-          description: error.message,
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
+      if (error) throw error;
+    } catch (error: any) {
       toast({
         title: 'Authentication Error',
-        description: 'An unexpected error occurred during login',
+        description: error.message || 'An unexpected error occurred during login',
         variant: 'destructive',
       });
     }
-  };
+  }, [toast]);
 
-  const signInWithGitHub = async () => {
+  const signInWithGitHub = useCallback(async (redirectPath: string = '/auth/callback') => {
     try {
-      const redirectUrl = `${window.location.origin}/auth/callback`;
-      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-          redirectTo: redirectUrl
-        }
+          redirectTo: `${window.location.origin}${redirectPath}`,
+        },
       });
 
-      if (error) {
-        toast({
-          title: "Authentication Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
+      if (error) throw error;
+    } catch (error: any) {
       toast({
-        title: "Authentication Error", 
-        description: "An unexpected error occurred during GitHub login",
+        title: "Authentication Error",
+        description: error.message || "An unexpected error occurred during GitHub login",
         variant: "destructive",
       });
     }
-  };
+  }, [toast]);
 
-  const signOut = async () => {
+  const signInWithEmail = useCallback(async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        toast({
-          title: 'Sign Out Error',
-          description: error.message,
-          variant: 'destructive',
-        });
-      } else {
-        toast({
-          title: 'Signed Out',
-          description: 'You have been successfully signed out',
-        });
-      }
-    } catch (error) {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
       toast({
-        title: 'Sign Out Error',
-        description: 'An unexpected error occurred during sign out',
+        title: 'Welcome Back',
+        description: 'Successfully signed in with email',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Authentication Error',
+        description: error.message || 'Invalid email or password',
         variant: 'destructive',
       });
     }
-  };
+  }, [toast]);
+
+  const signUp = useCallback(async (email: string, password: string, metadata: any) => {
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: metadata,
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Account Created',
+        description: 'Please check your email to confirm your registration',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Registration Error',
+        description: error.message || 'An unexpected error occurred during registration',
+        variant: 'destructive',
+      });
+    }
+  }, [toast]);
+
+  const signOut = useCallback(async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      toast({
+        title: 'Signed Out',
+        description: 'You have been successfully signed out',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Sign Out Error',
+        description: error.message || 'An unexpected error occurred during sign out',
+        variant: 'destructive',
+      });
+    }
+  }, [toast]);
 
   const value = {
     user,
     session,
     loading,
     signInWithGoogle,
+    signInWithGitHub,
+    signInWithEmail,
+    signUp,
     signOut
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+

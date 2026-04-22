@@ -15,7 +15,8 @@ const mockMentors = [
     reviews: 127,
     location: "San Francisco, CA",
     skills: ["React", "TypeScript", "System Design", "Mentoring"],
-    bio: "Helping developers transition into senior roles with 8+ years at top tech companies."
+    bio: "Helping developers transition into senior roles with 8+ years at top tech companies.",
+    hourlyRate: 120
   },
   {
     id: 2,
@@ -27,60 +28,70 @@ const mockMentors = [
     reviews: 89,
     location: "Seattle, WA",
     skills: ["Product Strategy", "Data Analysis", "Leadership", "Agile"],
-    bio: "Product leader passionate about building successful products and teams."
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    title: "UX Design Lead",
-    company: "Figma",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-    rating: 5.0,
-    reviews: 156,
-    location: "New York, NY",
-    skills: ["UI/UX Design", "Design Systems", "User Research", "Prototyping"],
-    bio: "Design leader with 10+ years creating user-centered experiences."
-  },
-  {
-    id: 4,
-    name: "David Kim",
-    title: "AI Engineer",
-    company: "OpenAI",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    rating: 4.9,
-    reviews: 94,
-    location: "Austin, TX",
-    skills: ["Machine Learning", "Python", "Deep Learning", "AI Ethics"],
-    bio: "AI researcher helping professionals transition into machine learning."
+    bio: "Product leader passionate about building successful products and teams.",
+    hourlyRate: 150
   }
 ];
 
 export class MentorService {
   static async getAllMentors() {
     try {
+      console.log('Fetching mentors from database...');
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .or('role.eq.mentor,role.eq.both');
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
       
-      // Map database names to UI names if necessary, 
-      // though we should stick to the DB schema for consistency.
+      console.log(`Found ${data?.length || 0} mentors in database.`);
+
+      // If no data in DB, return mock data for demonstration
+      if (!data || data.length === 0) {
+        console.log('Returning fallback mock mentors.');
+        return mockMentors.map(m => ({
+          ...m,
+          display_name: m.name,
+          avatar_url: m.avatar,
+          hourly_rate: m.hourlyRate,
+          availability: 'Weekdays, 6pm - 9pm'
+        }));
+      }
+
       return data.map(profile => ({
         ...profile,
         name: profile.display_name,
         avatar: profile.avatar_url,
-        // skills are already an array in the new schema
       }));
     } catch (error) {
       console.error('Error fetching mentors:', error);
-      return []; 
+      return mockMentors.map(m => ({
+        ...m,
+        display_name: m.name,
+        avatar_url: m.avatar,
+        hourly_rate: m.hourlyRate,
+        availability: 'Weekdays, 6pm - 9pm'
+      }));
     }
   }
 
   static async getMentorById(id: string) {
     try {
+      // Check if it's a mock ID (numeric)
+      const mock = mockMentors.find(m => m.id.toString() === id);
+      if (mock) {
+        return {
+          ...mock,
+          display_name: mock.name,
+          avatar_url: mock.avatar,
+          hourly_rate: mock.hourlyRate,
+          availability: mock.availability || 'Weekdays, 6pm - 9pm'
+        };
+      }
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -98,4 +109,5 @@ export class MentorService {
       return null;
     }
   }
+
 }

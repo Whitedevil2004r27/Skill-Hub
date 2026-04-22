@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -8,12 +8,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { GraduationCap, Mail, Lock, User, Github, Users, BookOpen } from "lucide-react";
+import { GraduationCap, Mail, Lock, User, Github, Users, BookOpen, Sparkles } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import BackgroundCanvas from "@/components/animations/BackgroundCanvas";
+import Magnet from "@/components/animations/Magnet";
+import { motion } from "framer-motion";
+import { TiltCard } from "@/components/animations/TiltCard";
 
-export default function Register() {
+function RegisterForm() {
   const searchParams = useSearchParams();
   const defaultRole = searchParams.get("role") || "learner";
   
+  const { signUp } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,199 +36,210 @@ export default function Register() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
+      toast({
+        title: "Registration Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
       return;
     }
-    // TODO: Implement registration logic
-    console.log("Registration attempt:", formData);
+    
+    setLoading(true);
+    try {
+      await signUp(formData.email, formData.password, {
+        display_name: `${formData.firstName} ${formData.lastName}`,
+        role: formData.role
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-hero p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-[#030303]">
+      <BackgroundCanvas />
+      
+      <div className="w-full max-w-lg relative z-10 py-12">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center space-x-2">
-            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-              <GraduationCap className="h-7 w-7 text-primary" />
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-10"
+        >
+          <Link href="/" className="inline-flex items-center space-x-3 group">
+            <div className="w-14 h-14 bg-violet-600 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(139,92,246,0.3)] group-hover:scale-110 transition-transform">
+              <GraduationCap className="h-8 w-8 text-white" />
             </div>
-            <span className="text-2xl font-bold text-white">SkillHub</span>
+            <span className="text-3xl font-bold text-white tracking-tight">SkillHub</span>
           </Link>
-        </div>
+        </motion.div>
 
         {/* Register Card */}
-        <Card className="glass border-white/20">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-white">Join SkillHub</CardTitle>
-            <CardDescription className="text-white/80">
-              Create your account and start your learning journey
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Role Selection */}
-            <div className="space-y-3">
-              <Label className="text-white">I want to:</Label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => handleInputChange("role", "learner")}
-                  className={`p-4 rounded-lg border-2 transition-all ${
-                    formData.role === "learner"
-                      ? "border-accent bg-accent/20 text-white"
-                      : "border-white/30 text-white/80 hover:border-white/50"
-                  }`}
-                >
-                  <BookOpen className="h-6 w-6  mb-2" />
-                  <div className="text-sm font-medium">Learn</div>
-                  <div className="text-xs opacity-80">Find mentors</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleInputChange("role", "mentor")}
-                  className={`p-4 rounded-lg border-2 transition-all ${
-                    formData.role === "mentor"
-                      ? "border-accent bg-accent/20 text-white"
-                      : "border-white/30 text-white/80 hover:border-white/50"
-                  }`}
-                >
-                  <Users className="h-6 w-6  mb-2" />
-                  <div className="text-sm font-medium">Mentor</div>
-                  <div className="text-xs opacity-80">Share knowledge</div>
-                </button>
-              </div>
-            </div>
+        <TiltCard>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative"
+          >
+            {/* Ambient glows */}
+            <div className="absolute -top-20 -left-20 w-60 h-60 bg-violet-600/20 rounded-full blur-[100px] -z-10" />
+            <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-indigo-600/20 rounded-full blur-[100px] -z-10" />
 
-            {/* OAuth Buttons */}
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                <Github className="mr-2 h-4 w-4" />
-                GitHub
-              </Button>
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Google
-              </Button>
-            </div>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <Separator className="w-full bg-white/20" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-transparent px-2 text-white/60">Or continue with</span>
-              </div>
-            </div>
-
-            {/* Registration Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-white">First Name</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-3 h-4 w-4 text-white/60" />
-                    <Input
-                      id="firstName"
-                      type="text"
-                      placeholder="First name"
-                      value={formData.firstName}
-                      onChange={(e) => handleInputChange("firstName", e.target.value)}
-                      className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                      required
-                    />
+            <Card className="bg-white/5 border-white/10 backdrop-blur-2xl rounded-[2.5rem] p-4 shadow-2xl">
+              <CardHeader className="text-center space-y-2">
+                <div className="mx-auto w-fit px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-[10px] font-medium uppercase tracking-wider mb-2">
+                  Join the Community
+                </div>
+                <CardTitle className="text-3xl font-bold text-white">Create Account</CardTitle>
+                <CardDescription className="text-gray-400">
+                  Start your journey with expert mentorship
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8 pt-4">
+                {/* Role Selection */}
+                <div className="space-y-4">
+                  <Label className="text-sm font-medium text-gray-300 ml-1">Select your path</Label>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button
+                      type="button"
+                      onClick={() => handleInputChange("role", "learner")}
+                      className={`p-5 rounded-2xl border-2 transition-all flex flex-col items-center text-center gap-2 ${
+                        formData.role === "learner"
+                          ? "border-violet-500 bg-violet-500/10 text-white"
+                          : "border-white/5 bg-white/5 text-gray-500 hover:border-white/10"
+                      }`}
+                    >
+                      <BookOpen className={`h-6 w-6 ${formData.role === "learner" ? "text-violet-400" : ""}`} />
+                      <div className="text-sm font-bold">I want to Learn</div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleInputChange("role", "mentor")}
+                      className={`p-5 rounded-2xl border-2 transition-all flex flex-col items-center text-center gap-2 ${
+                        formData.role === "mentor"
+                          ? "border-violet-500 bg-violet-500/10 text-white"
+                          : "border-white/5 bg-white/5 text-gray-500 hover:border-white/10"
+                      }`}
+                    >
+                      <Users className={`h-6 w-6 ${formData.role === "mentor" ? "text-violet-400" : ""}`} />
+                      <div className="text-sm font-bold">I want to Mentor</div>
+                    </button>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-white">Last Name</Label>
-                  <Input
-                    id="lastName"
-                    type="text"
-                    placeholder="Last name"
-                    value={formData.lastName}
-                    onChange={(e) => handleInputChange("lastName", e.target.value)}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">Email</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-white/60" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
-                    className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                    required
-                  />
+                  <div className="absolute inset-0 flex items-center">
+                    <Separator className="w-full bg-white/10" />
+                  </div>
+                  <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-bold">
+                    <span className="bg-transparent px-4 text-gray-500">Registration Details</span>
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-white">Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-white/60" />
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Create a password"
-                    value={formData.password}
-                    onChange={(e) => handleInputChange("password", e.target.value)}
-                    className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                    required
-                  />
+                {/* Registration Form */}
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName" className="text-sm font-medium text-gray-300 ml-1">First Name</Label>
+                      <Input
+                        id="firstName"
+                        placeholder="Jane"
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange("firstName", e.target.value)}
+                        className="h-14 rounded-2xl bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:ring-violet-500/50"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName" className="text-sm font-medium text-gray-300 ml-1">Last Name</Label>
+                      <Input
+                        id="lastName"
+                        placeholder="Doe"
+                        value={formData.lastName}
+                        onChange={(e) => handleInputChange("lastName", e.target.value)}
+                        className="h-14 rounded-2xl bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:ring-violet-500/50"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm font-medium text-gray-300 ml-1">Email Address</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="jane@example.com"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange("email", e.target.value)}
+                        className="h-14 pl-12 rounded-2xl bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:ring-violet-500/50"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="password" className="text-sm font-medium text-gray-300 ml-1">Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="••••••••"
+                        value={formData.password}
+                        onChange={(e) => handleInputChange("password", e.target.value)}
+                        className="h-14 rounded-2xl bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:ring-violet-500/50"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-300 ml-1">Confirm</Label>
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        placeholder="••••••••"
+                        value={formData.confirmPassword}
+                        onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                        className="h-14 rounded-2xl bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:ring-violet-500/50"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="text-[10px] text-gray-500 text-center leading-relaxed">
+                    By joining, you agree to our <Link href="/terms" className="text-violet-400">Terms</Link> and <Link href="/privacy" className="text-violet-400">Privacy Policy</Link>.
+                  </div>
+
+                  <Magnet>
+                    <Button type="submit" disabled={loading} className="w-full h-14 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold shadow-[0_0_20px_rgba(139,92,246,0.2)]">
+                      {loading ? "Creating Account..." : "Create Account"}
+                    </Button>
+                  </Magnet>
+                </form>
+
+                <div className="text-center text-sm text-gray-500">
+                  Already have an account?{" "}
+                  <Link href="/login" className="text-violet-400 hover:text-violet-300 font-bold ml-1">
+                    Sign in
+                  </Link>
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-white">Confirm Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-white/60" />
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Confirm your password"
-                    value={formData.confirmPassword}
-                    onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-                    className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="text-xs text-white/60">
-                By creating an account, you agree to our{" "}
-                <Link href="/terms" className="text-accent hover:text-accent/80">Terms of Service</Link>
-                {" "}and{" "}
-                <Link href="/privacy" className="text-accent hover:text-accent/80">Privacy Policy</Link>
-              </div>
-
-              <Button type="submit" className="w-full bg-white text-primary hover:bg-white/90">
-                Create Account
-              </Button>
-            </form>
-
-            <div className="text-center text-sm text-white/80">
-              Already have an account?{" "}
-              <Link href="/login" className="text-accent hover:text-accent/80 font-medium">
-                Sign in
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </TiltCard>
       </div>
     </div>
+  );
+}
+
+export default function Register() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#030303] flex items-center justify-center text-white">Loading...</div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }

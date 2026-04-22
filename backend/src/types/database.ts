@@ -73,6 +73,7 @@ export type Database = {
           role: string | null
           skills: string[] | null
           title: string | null
+          is_admin: boolean | null
           updated_at: string
           user_id: string
         }
@@ -89,6 +90,7 @@ export type Database = {
           role?: string | null
           skills?: string[] | null
           title?: string | null
+          is_admin?: boolean | null
           updated_at?: string
           user_id: string
         }
@@ -105,6 +107,7 @@ export type Database = {
           role?: string | null
           skills?: string[] | null
           title?: string | null
+          is_admin?: boolean | null
           updated_at?: string
           user_id?: string
         }

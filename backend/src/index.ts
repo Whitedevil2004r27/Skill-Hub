@@ -13,7 +13,8 @@ import { ReviewService } from './services/reviewService';
 import { AdminService } from './services/adminService';
 import { verifyJWT, verifyAdmin } from './middleware/auth';
 
-dotenv.config();
+import path from 'path';
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
 const port = process.env.PORT || 3001;
