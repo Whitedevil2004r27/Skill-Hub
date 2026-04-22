@@ -50,7 +50,7 @@ export const useProfile = () => {
   };
 
   const updateProfile = async (updates: Partial<Profile>) => {
-    if (!user || !profile) return;
+    if (!user || !profile || !session) return;
 
     try {
       const response = await fetch(`${API_URL}/profiles/${user.id}`, {
