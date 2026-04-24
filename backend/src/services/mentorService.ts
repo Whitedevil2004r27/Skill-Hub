@@ -16,7 +16,8 @@ const mockMentors = [
     location: "San Francisco, CA",
     skills: ["React", "TypeScript", "System Design", "Mentoring"],
     bio: "Helping developers transition into senior roles with 8+ years at top tech companies.",
-    hourlyRate: 120
+    hourlyRate: 120,
+    availability: 'Weekdays, 6pm - 9pm'
   },
   {
     id: 2,
@@ -29,7 +30,8 @@ const mockMentors = [
     location: "Seattle, WA",
     skills: ["Product Strategy", "Data Analysis", "Leadership", "Agile"],
     bio: "Product leader passionate about building successful products and teams.",
-    hourlyRate: 150
+    hourlyRate: 150,
+    availability: 'Weekends, 10am - 2pm'
   }
 ];
 
